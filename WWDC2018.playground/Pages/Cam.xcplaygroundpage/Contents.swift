@@ -1,50 +1,103 @@
-
+import UIKit
 import AVFoundation
-import AVKit
 import PlaygroundSupport
+import Foundation
+import Vision
 
-let view = NSView(frame: NSRect(x: 0.0, y: 0.0, width: 640.0, height: 480.0))
+// get the file path for the file "test.json" in the playground bundle
 
-let session = AVCaptureSession()
+public class Camera{
+    let view = UIView(frame: CGRect(x: 0, y: 0, width: 512, height: 369))
+    let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 512, height: 369))
+    let faceView = UIImageView(frame: CGRect(x: 195, y: 75, width: (350 * 0.35), height: (325 * 0.35)))
+    var names: [String] = []
+    var images: [UIImage] = []
+    let faceDetection = VNDetectFaceRectanglesRequest()
+    let faceLandmarksDetectionRequest = VNSequenceRequestHandler()
+    let faceDetectionRequest = VNSequenceRequestHandler()
+    let frame = UIView()
+    public init(){
+        getImageNames()
+        imageView.contentMode = .scaleAspectFit
+        let face = UIImage(named: names[1])
+        imageView.image = UIImage(named: "Images/astronaut")
+        faceView.contentMode = .scaleAspectFill
+        view.addSubview(faceView)
+        view.addSubview(imageView)
+        view.addSubview(frame)
 
-session.sessionPreset = AVCaptureSession.Preset.vga640x480
-session.beginConfiguration()
-session.commitConfiguration()
+        
+        PlaygroundPage.current.liveView = view
+    }
+    func getImageNames(){
+        var path = Bundle.main.paths(forResourcesOfType: "png", inDirectory: nil)
+          path.append(contentsOf: Bundle.main.paths(forResourcesOfType: "jpg", inDirectory: nil))
 
-var input : AVCaptureDeviceInput
-if let devices : [AVCaptureDevice] = AVCaptureDevice.devices() as? [AVCaptureDevice] {
-    for device in devices {
-        if device.hasMediaType(AVMediaType.video) && device.supportsSessionPreset(AVCaptureSession.Preset.vga640x480) {
-            do {
-                input = try AVCaptureDeviceInput(device: device as AVCaptureDevice) as AVCaptureDeviceInput
-                
-                if session.canAddInput(input) {
-                    session.addInput(input)
-                    break
-                }
+        
+        for image in path {
+            var i = image.count - 5
+            var c = image.index(image.startIndex, offsetBy: i)
+            var name = ""
+           
+            while (image[c] != "/") {
+                name = "\(image[c])" + name
+                i -= 1
+                c = image.index(image.startIndex, offsetBy: i)
             }
-            catch {
-                error
+            detectFace(on: UIImage(named: name)!)
+            names.append(name)
+            print(name)
+        }
+    }
+    func detectFace(on image: UIImage) {
+   
+        try? faceDetectionRequest.perform([faceDetection], on: image.cgImage!)
+        if let results = faceDetection.results as? [VNFaceObservation] {
+            if !results.isEmpty {
+                     print(results)
+                DispatchQueue.main.async {
+                    let observation = results.last!.boundingBox
+                    var length1 = max(observation.width, observation.height)
+                    if (length1 == observation.width){
+                        length1 *= image.size.width
+                    }
+                    else{
+                        length1 *= image.size.height
+                    }
+               let rect =  CGRect(x: (observation.midX * image.size.width) - (length1 * 0.75), y:  (observation.minY * image.size.height) - (length1 * 0.1), width: length1 * 1.5, height: length1 * 1.5)
+               // let cropped =  CIImage(cgImage: image.cgImage!).cropped(to: self.frame.frame)
+                    self.images.append(self.cropToBounds(image: image, rect: rect))
+                    self.faceView.image = self.images.last
+                 //   self.imageView.image = self.cropToBounds(image: image, rect: rect)
+                    self.imageView.contentMode = .scaleAspectFit
+                }
             }
         }
     }
-    
-    let output = AVCaptureVideoDataOutput()
-    output.videoSettings = [kCVPixelBufferPixelFormatTypeKey as AnyHashable as! String: Int(kCVPixelFormatType_32BGRA)]
-    output.alwaysDiscardsLateVideoFrames = true
-    
-    if session.canAddOutput(output) {
-        session.addOutput(output)
+    func cropToBounds(image: UIImage, rect: CGRect) -> UIImage {
+        let contextImage: UIImage = UIImage(cgImage: image.cgImage!)
+        
+//        let contextSize: CGSize = contextImage.size
+//        var posX: CGFloat = contextSize.width
+//        var posY: CGFloat = contextSize.width
+//        var cgwidth: CGFloat = CGFloat(width)
+//        var cgheight: CGFloat = CGFloat(height)
+        // See what size is longer and create the center off of that
+        
+        
+       // let rect: CGRect = CGRect(x: posX-cgwidth/2, y: posY-cgheight/2, width: cgwidth, height: cgheight)
+        // Create bitmap image from context using the rect
+        let imageRef: CGImage = contextImage.cgImage!.cropping(to: rect)!
+        
+        // Create a new image based on the imageRef and rotate back to the original orientation
+        let image: UIImage = UIImage(cgImage: imageRef, scale: image.scale, orientation: image.imageOrientation)
+        
+        return image
     }
+   
     
-    let captureLayer = AVCaptureVideoPreviewLayer(session: session)
-    view.wantsLayer = true
-    view.layer = captureLayer
-    
-    session.startRunning()
-    
-    //View -> Assistant Editor -> Show Assistant Editor
-    PlaygroundPage.current.liveView = view
     
 }
+
+let camera = Camera()
 

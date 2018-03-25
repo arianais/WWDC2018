@@ -8,18 +8,18 @@ public class UI {
     
     //MARK: Nodes
     let content = SKNode()
-    let rocket = SKSpriteNode(texture: SKTexture(imageNamed: "rocket"))
+    let rocket = SKSpriteNode(texture: SKTexture(imageNamed: "Images/rocket"))
     let stars = SKSpriteNode()
     //MARK: Planet Nodes
-    let earth = SKSpriteNode(texture: SKTexture(imageNamed: "earth"))
-    let purpleplanet = SKSpriteNode(texture: SKTexture(imageNamed: "purpleplanet"))
-    let grayplanet = SKSpriteNode(texture: SKTexture(imageNamed: "grayplanet"))
+    let earth = SKSpriteNode(texture: SKTexture(imageNamed: "Images/earth"))
+    let purpleplanet = SKSpriteNode(texture: SKTexture(imageNamed: "Images/purpleplanet"))
+    let grayplanet = SKSpriteNode(texture: SKTexture(imageNamed: "Images/grayplanet"))
     
     //MARK: Extra Nodes
-    let alien1 = SKSpriteNode(texture: SKTexture(imageNamed: "aliens/alien0"))
-    let alien2 = SKSpriteNode(texture: SKTexture(imageNamed: "aliens/alien0"))
-    let alien3 = SKSpriteNode(texture: SKTexture(imageNamed: "aliens/alien0"))
-    var commet = SKSpriteNode(texture: SKTexture(imageNamed: "commets/commet0") )
+    let alien1 = SKSpriteNode(texture: SKTexture(imageNamed: "Images/aliens/alien0"))
+    let alien2 = SKSpriteNode(texture: SKTexture(imageNamed: "Images/aliens/alien0"))
+    let alien3 = SKSpriteNode(texture: SKTexture(imageNamed: "Images/aliens/alien0"))
+    var commet = SKSpriteNode(texture: SKTexture(imageNamed: "Images/commets/commet0") )
     let commmetPath = SKShapeNode(circleOfRadius: 1000)
     
     //MARK: User Nodes
@@ -115,7 +115,7 @@ public class UI {
         
         for e in order {
            let change =  SKAction.run {
-                self.commet.texture = SKTexture(imageNamed: "commets/commet\(e)")
+                self.commet.texture = SKTexture(imageNamed: "Images/commets/commet\(e)")
 
             }
              movement.append(change)
@@ -181,7 +181,7 @@ public class UI {
         var textures: [SKTexture] = []
     
         for e in order {
-            textures.append(SKTexture(imageNamed: "aliens/alien\(e)"))
+            textures.append(SKTexture(imageNamed: "Images/aliens/alien\(e)"))
         }
         let animate = SKAction.animate(with: textures, timePerFrame: (0.2))
         let wait = SKAction.wait(forDuration: 10.0)
@@ -219,14 +219,14 @@ public class UI {
     //MARK: Scene Setup Functions
     func basic(){
         DispatchQueue.main.async {
-            let star = SKSpriteNode(texture: SKTexture(imageNamed: "stars"))
+            let star = SKSpriteNode(texture: SKTexture(imageNamed: "Images/stars"))
             star.setScale(1/6)
             star.position = CGPoint(x: 250, y:175)
             self.stars.addChild(star)
             self.content.addChild(self.stars)
         }
         DispatchQueue.main.async {
-            let star = SKSpriteNode(texture: SKTexture(imageNamed: "stars"))
+            let star = SKSpriteNode(texture: SKTexture(imageNamed: "Images/stars"))
             star.setScale(1/6)
             star.position = CGPoint(x: 750, y:175)
             self.stars.addChild(star)
@@ -305,7 +305,7 @@ public class UI {
     //MARK: User Utils
     func createSpeach(){
         DispatchQueue.main.async {
-            let bubble = SKSpriteNode(texture: SKTexture(imageNamed: "bubble"))
+            let bubble = SKSpriteNode(texture: SKTexture(imageNamed: "Images/bubble"))
             bubble.setScale(1/6)
             self.speach.addChild(bubble)
         }
@@ -335,7 +335,7 @@ public class UI {
     }
     func addAvatars(){
         DispatchQueue.main.async {
-            let pic = SKSpriteNode(texture: SKTexture(imageNamed: "photoshadow"))
+            let pic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/photoshadow"))
             pic.setScale(1/6)
             self.navigator.addChild(pic)
             self.navigator.position = CGPoint(x: 60, y: 310)
@@ -343,7 +343,7 @@ public class UI {
             self.content.addChild(self.navigator)
         }
         DispatchQueue.main.async {
-            let pic = SKSpriteNode(texture: SKTexture(imageNamed: "photoshadow"))
+            let pic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/photoshadow"))
             pic.setScale(1/6)
             self.pilot.addChild(pic)
             self.pilot.position = CGPoint(x: 85, y: 310)
