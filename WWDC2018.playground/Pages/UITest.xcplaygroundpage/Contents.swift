@@ -9,17 +9,18 @@ public class UI {
     //MARK: Nodes
     let content = SKNode()
     let rocket = SKSpriteNode(texture: SKTexture(imageNamed: "rocket"))
-    let stars = SKSpriteNode(texture: SKTexture(imageNamed: "stars"))
+    let stars = SKSpriteNode()
     //MARK: Planet Nodes
     let earth = SKSpriteNode(texture: SKTexture(imageNamed: "earth"))
     let purpleplanet = SKSpriteNode(texture: SKTexture(imageNamed: "purpleplanet"))
     let grayplanet = SKSpriteNode(texture: SKTexture(imageNamed: "grayplanet"))
     
     //MARK: Extra Nodes
-    let alien1 = SKSpriteNode(texture: SKTexture(imageNamed: "alien"))
-    let alien2 = SKSpriteNode(texture: SKTexture(imageNamed: "alien"))
-    let alien3 = SKSpriteNode(texture: SKTexture(imageNamed: "alien"))
-    let commet = SKSpriteNode(texture: SKTexture(imageNamed: "commet"))
+    let alien1 = SKSpriteNode(texture: SKTexture(imageNamed: "aliens/alien0"))
+    let alien2 = SKSpriteNode(texture: SKTexture(imageNamed: "aliens/alien0"))
+    let alien3 = SKSpriteNode(texture: SKTexture(imageNamed: "aliens/alien0"))
+    var commet = SKSpriteNode(texture: SKTexture(imageNamed: "commets/commet0") )
+    let commmetPath = SKShapeNode(circleOfRadius: 1000)
     
     //MARK: User Nodes
     var speach = SKSpriteNode()
@@ -49,7 +50,10 @@ public class UI {
         view.presentScene(scene)
         content.position = CGPoint(x: 0, y: 0)
         scene.addChild(content)
-        scene2()
+        //self.scene = 2
+        scene1()
+      // createHalfCricle()
+        
     }
     func test(){
         let blueBox = SKSpriteNode(color: SKColor.blue, size: CGSize(width: 150, height: 150))
@@ -74,21 +78,158 @@ public class UI {
                 self.narrative.remove(at: 0)
             }
             else{
-                self.scene = 2
+                self.scene = 1
                 next(selector)
             }
+        case 1:
+            self.speach.isHidden = true
+            self.navigator.isHidden = true
+            self.pilot.isHidden = true
+            scene2()
+            moveStars(count: 1)
+            
+            moveOutPlanet(oldPlanet: earth, newPlanet: self.purpleplanet)
+            animateAliens()
+            self.scene = 2
         case 2:
-            return
+            scene3()
+            moveStars(count: 1)
+            moveOutPlanet(oldPlanet: self.purpleplanet, newPlanet: self.grayplanet)
+            animateCommet()
+            self.scene = 3
         default:
             return
         }
     }
+    //MARK: Animation
+    func animateCommet(){
+        let path = UIBezierPath()
+        path.move(to: CGPoint(x:550, y:275))
+        path.addCurve(to: CGPoint(x:-25, y:200), controlPoint1: CGPoint(x:300, y:325), controlPoint2: CGPoint(x:200, y:325))
+        
+  
+       let circle = SKAction.follow( path.cgPath, asOffset: false, orientToPath: true, duration: 3.0)
+        let wait = SKAction.wait(forDuration: 10.0)
+       let order = [1,2,3,4,5,6,7]
+        var movement = [wait, circle]
+        
+        for e in order {
+           let change =  SKAction.run {
+                self.commet.texture = SKTexture(imageNamed: "commets/commet\(e)")
+
+            }
+             movement.append(change)
+             movement.append(circle)
+        }
+   //   let movementSequence = SKAction.sequence(movement)
+       // let fadeSequence = SKAction.sequence(fade)
+        
+       commet.run( SKAction.sequence(movement))
+       //commet.run(SKAction.group([movementSequence, fadeSequence]))
+    }
+    func createHalfCricle(){
+ 
+//        let longLine = UIBezierPath()
+//        longLine.move(to: CGPoint(x:0, y:25))
+//        longLine.addLine(to: CGPoint(x:375, y:25))
+//        content.addChild(SKShapeNode(path: longLine.cgPath))
+        
+        // add the first straight line
+//        let line1 = UIBezierPath()
+//        line1.move(to: CGPoint(x:0, y:25))
+//        line1.addLine(to: CGPoint(x: 0, y:25))
+        
+        // make the curved line
+        
+        
+       // line2.addCurve(to: CGPoint(x:300, y:300), controlPoint1: CGPoint(x:270, y:300), controlPoint2: CGPoint(x:300, y:300))
+        let line2 = UIBezierPath()
+        line2.move(to: CGPoint(x:550, y:275))
+        line2.addCurve(to: CGPoint(x:0, y:200), controlPoint1: CGPoint(x:300, y:325), controlPoint2: CGPoint(x:200, y:325))
+        line2.miterLimit = 4
+        line2.lineCapStyle = .round
+        // make it dashed
+        let line2Dashed = SKShapeNode(path: line2.cgPath.copy(dashingWithPhase: 2, lengths: [4, 4]))
+       content.addChild(line2Dashed)
+        
+        // add the last straight line
+        let line3 = UIBezierPath()
+        line3.move(to: CGPoint(x:300, y:25))
+        line3.addLine(to: CGPoint(x:375, y:25))
+
+    }
+//    func fadeCommet(_ number: Int) -> SKAction{
+//        let run = SKAction.run {
+//            let fadeOut = SKAction.fadeOut(withDuration: 1.0)
+//            let remove = SKAction.run {
+//                self.commet.children[0].removeFromParent()
+//            }
+//            self.commet.children[0].run(SKAction.sequence([fadeOut, remove]))
+//            let fadeIn = SKAction.fadeIn(withDuration: 1.0)
+//            let newNode = SKSpriteNode(texture: SKTexture(imageNamed: "commets/commet\(number)") )
+//            newNode.alpha = 0.0
+//            self.commet.addChild(newNode)
+//            newNode.run(fadeIn)
+//
+//
+//
+//        }
+//        return run
+//    }
+    func animateAliens(){
+        let order = [0,1,2,2,2,3,3,3,3,3,4,5,6,6,6,7,8,8,8,8,8,8,8,8,8,9,10,11,12,13,14,15,16,17,18,19,19,19,19,19,19,20,21,22,22,22,23,24,25,25,25,26,26,26,26,26,27,27,27,27,27,28,27,29,28,27,29,28,27,29,27]
+        var textures: [SKTexture] = []
+    
+        for e in order {
+            textures.append(SKTexture(imageNamed: "aliens/alien\(e)"))
+        }
+        let animate = SKAction.animate(with: textures, timePerFrame: (0.2))
+        let wait = SKAction.wait(forDuration: 10.0)
+        alien1.run(SKAction.sequence([wait, animate]))
+        alien2.run(SKAction.sequence([wait, animate]))
+        alien3.run(SKAction.sequence([wait, animate]))
+        
+    }
+    func moveStars(count: Int){
+        let sprite = self.stars
+        
+        let fadeIn = SKAction.moveBy(x: -300, y: 0, duration: 10.0)
+        let fadeOut = SKAction.moveTo(x: 0, duration: 0.0)
+        let seq01 = SKAction.sequence([ fadeIn, fadeOut])
+        let repeater = SKAction.repeat(seq01, count: count)
+        
+        sprite.run(repeater)
+        
+       
+        
+    }
+    func moveOutPlanet(oldPlanet: SKSpriteNode?, newPlanet: SKSpriteNode?){
+     
+        if let planet = oldPlanet{
+   
+                planet.run(SKAction.moveTo(x: -400, duration: 4.0))
+           
+        }
+        if let planet = newPlanet{
+            planet.run( SKAction.sequence([SKAction.wait(forDuration: 6.0), SKAction.moveTo(x: 250, duration: 4.0) ]))
+        }
+     
+       
+    }
     //MARK: Scene Setup Functions
     func basic(){
         DispatchQueue.main.async {
-            self.stars.setScale(1/6)
-            self.stars.position = CGPoint(x: 250, y:175)
+            let star = SKSpriteNode(texture: SKTexture(imageNamed: "stars"))
+            star.setScale(1/6)
+            star.position = CGPoint(x: 250, y:175)
+            self.stars.addChild(star)
             self.content.addChild(self.stars)
+        }
+        DispatchQueue.main.async {
+            let star = SKSpriteNode(texture: SKTexture(imageNamed: "stars"))
+            star.setScale(1/6)
+            star.position = CGPoint(x: 750, y:175)
+            self.stars.addChild(star)
         }
         DispatchQueue.main.async {
             self.rocket.setScale(1/6)
@@ -107,7 +248,7 @@ public class UI {
             self.basic()
         }
         DispatchQueue.main.async {
-            self.earth.setScale(1/6)
+            self.earth.setScale(1/2)
             self.earth.position = CGPoint(x: 400, y: 20)
             self.content.addChild(self.earth)
         }
@@ -119,46 +260,46 @@ public class UI {
         }
     }
     func scene2(){
-        self.basic()
+        //self.basic()
         DispatchQueue.main.async {
-            self.purpleplanet.setScale(1/6)
-            self.purpleplanet.position = CGPoint(x: self.purpleplanet.frame.width * 0.5, y: 20)
+            self.purpleplanet.setScale(1/2)
+            self.purpleplanet.position = CGPoint(x: 1200, y: 20)
             self.content.addChild(self.purpleplanet)
         }
         DispatchQueue.main.async {
-            self.alien1.setScale(1/6)
-            self.alien1.position = CGPoint(x: 200, y: 75)
-            self.content.addChild(self.alien1)
+            self.alien1.setScale(1)
+            self.alien1.position = CGPoint(x: -75, y: 100)
+            self.purpleplanet.addChild(self.alien1)
         }
         DispatchQueue.main.async {
-            self.alien2.setScale(1/6)
-            self.alien2.position = CGPoint(x: 300, y: 75)
-            self.content.addChild(self.alien2)
+            self.alien2.setScale(1)
+            self.alien2.position = CGPoint(x: 75, y: 100)
+            self.purpleplanet.addChild(self.alien2)
         }
         DispatchQueue.main.async {
-            self.alien3.setScale(1/6)
-            self.alien3.position = CGPoint(x: 400, y: 75)
-            self.content.addChild(self.alien3)
+            self.alien3.setScale(1)
+            self.alien3.position = CGPoint(x: 225, y: 100)
+            self.purpleplanet.addChild(self.alien3)
         }
         
     }
     func scene3(){
         DispatchQueue.main.async {
-            self.basic()
+            self.commmetPath.fillColor = .clear
+            self.commmetPath.strokeColor = .clear
+    
+            self.commmetPath.position = CGPoint(x: 300, y: -700)
+            self.content.addChild(self.commmetPath)
         }
         DispatchQueue.main.async {
-            self.grayplanet.setScale(1/6)
-            self.grayplanet.position = CGPoint(x: self.grayplanet.frame.width * 0.5, y: 20)
+            self.grayplanet.setScale(1/2)
+            self.grayplanet.position = CGPoint(x: 1200, y: 20)
             self.content.addChild(self.grayplanet)
         }
         DispatchQueue.main.async {
-            self.commet.setScale(1/6)
-            self.commet.position = CGPoint(x: 300, y: 150)
+            self.commet.setScale(1/2)
+            self.commet.position = CGPoint(x: 300, y: -50)
             self.content.addChild(self.commet)
-        }
-        DispatchQueue.main.async {
-            self.createSpeach()
-            self.addAvatars()
         }
     }
     //MARK: User Utils
