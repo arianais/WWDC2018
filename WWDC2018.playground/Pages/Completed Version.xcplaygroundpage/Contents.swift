@@ -32,7 +32,8 @@ rocket.navigator = "Ari"
 ```
 :*/
 let rocket = Rocket()
-
+rocket.pilot = "Tim"
+//rocket.navigator = "Ari"
 /*:
 2. Next, let's swing by your new planet.
 Create a `stop1` variable, and set it equal to a String of your planet's name.

@@ -1,12 +1,17 @@
 import Foundation
 
 public class Rocket{
-    var navigator: String? {
+    public var navigator: String? {
+        didSet{
+            update(2)
+        }
+    }
+    public var pilot: String? {
         didSet{
             update(1)
         }
     }
-    var status: [Bool] = [false, false]
+    private var status: [Bool] = [false, false]
     public init() {
         print("hello")
         update(0)

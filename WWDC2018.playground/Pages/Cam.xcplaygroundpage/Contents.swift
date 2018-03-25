@@ -67,7 +67,7 @@ public class Camera{
                let rect =  CGRect(x: (observation.midX * image.size.width) - (length1 * 0.75), y:  (observation.minY * image.size.height) - (length1 * 0.1), width: length1 * 1.5, height: length1 * 1.5)
                // let cropped =  CIImage(cgImage: image.cgImage!).cropped(to: self.frame.frame)
                     self.images.append(self.cropToBounds(image: image, rect: rect))
-                    self.faceView.image = self.images.last
+                    self.faceView.image = self.images[0]
                  //   self.imageView.image = self.cropToBounds(image: image, rect: rect)
                     self.imageView.contentMode = .scaleAspectFit
                 }
