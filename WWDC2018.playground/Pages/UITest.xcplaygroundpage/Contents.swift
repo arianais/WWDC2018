@@ -52,6 +52,9 @@ public class UI {
         scene.addChild(content)
         //self.scene = 2
         scene1()
+        DispatchQueue.main.async {
+            self.scene2()
+        }
       // createHalfCricle()
         
     }
@@ -64,6 +67,7 @@ public class UI {
         content.addChild(redBox)
         
     }
+    
     @objc func next(_ selector: UIButton){
         switch scene {
         case 0:
@@ -82,14 +86,21 @@ public class UI {
                 next(selector)
             }
         case 1:
-            self.speach.isHidden = true
-            self.navigator.isHidden = true
-            self.pilot.isHidden = true
-            scene2()
-            moveStars(count: 1)
+            DispatchQueue.main.async {
+                self.speach.isHidden = true
+                self.navigator.isHidden = true
+                self.pilot.isHidden = true
+            }
+            DispatchQueue.main.async {
+                self.moveStars(count: 1)
+            }
             
-            moveOutPlanet(oldPlanet: earth, newPlanet: self.purpleplanet)
-            animateAliens()
+            DispatchQueue.main.async {
+                self.moveOutPlanet(oldPlanet: self.earth, newPlanet: self.purpleplanet)
+            }
+            DispatchQueue.main.async {
+                self.animateAliens()
+            }
             self.scene = 2
         case 2:
             scene3()
@@ -128,21 +139,6 @@ public class UI {
        //commet.run(SKAction.group([movementSequence, fadeSequence]))
     }
     func createHalfCricle(){
- 
-//        let longLine = UIBezierPath()
-//        longLine.move(to: CGPoint(x:0, y:25))
-//        longLine.addLine(to: CGPoint(x:375, y:25))
-//        content.addChild(SKShapeNode(path: longLine.cgPath))
-        
-        // add the first straight line
-//        let line1 = UIBezierPath()
-//        line1.move(to: CGPoint(x:0, y:25))
-//        line1.addLine(to: CGPoint(x: 0, y:25))
-        
-        // make the curved line
-        
-        
-       // line2.addCurve(to: CGPoint(x:300, y:300), controlPoint1: CGPoint(x:270, y:300), controlPoint2: CGPoint(x:300, y:300))
         let line2 = UIBezierPath()
         line2.move(to: CGPoint(x:550, y:275))
         line2.addCurve(to: CGPoint(x:0, y:200), controlPoint1: CGPoint(x:300, y:325), controlPoint2: CGPoint(x:200, y:325))
@@ -158,24 +154,6 @@ public class UI {
         line3.addLine(to: CGPoint(x:375, y:25))
 
     }
-//    func fadeCommet(_ number: Int) -> SKAction{
-//        let run = SKAction.run {
-//            let fadeOut = SKAction.fadeOut(withDuration: 1.0)
-//            let remove = SKAction.run {
-//                self.commet.children[0].removeFromParent()
-//            }
-//            self.commet.children[0].run(SKAction.sequence([fadeOut, remove]))
-//            let fadeIn = SKAction.fadeIn(withDuration: 1.0)
-//            let newNode = SKSpriteNode(texture: SKTexture(imageNamed: "commets/commet\(number)") )
-//            newNode.alpha = 0.0
-//            self.commet.addChild(newNode)
-//            newNode.run(fadeIn)
-//
-//
-//
-//        }
-//        return run
-//    }
     func animateAliens(){
         let order = [0,1,2,2,2,3,3,3,3,3,4,5,6,6,6,7,8,8,8,8,8,8,8,8,8,9,10,11,12,13,14,15,16,17,18,19,19,19,19,19,19,20,21,22,22,22,23,24,25,25,25,26,26,26,26,26,27,27,27,27,27,28,27,29,28,27,29,28,27,29,27]
         var textures: [SKTexture] = []
@@ -242,6 +220,9 @@ public class UI {
             self.view.addSubview(self.button)
             
         }
+    }
+    func team(){
+        
     }
     func scene1(){
         DispatchQueue.main.async {

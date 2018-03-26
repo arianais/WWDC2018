@@ -102,8 +102,10 @@ navigation.stop1 = stop1
  5. Let's add the second stop on our trip.
  Create a `stop2` variable, and set it equal to a String of your planet's name. Then, set `navigation.stop2` equal to `stop2`.
  - Example:
- `let stop2 = "Arianatopia"`
- `navigation.stop2 = stop2`
+  ` ` `
+let stop2 = "Arianatopia"
+navigation.stop2 = stop2
+ ` ` `
 :*/
 let stop2 = "Arianatopia"
 navigation.stop2 = stop2
