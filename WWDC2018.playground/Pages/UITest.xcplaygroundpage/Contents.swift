@@ -51,9 +51,9 @@ public class UI {
         content.position = CGPoint(x: 0, y: 0)
         scene.addChild(content)
         //self.scene = 2
-        scene1()
+       // team()
         DispatchQueue.main.async {
-            self.scene2()
+            self.scene1()
         }
       // createHalfCricle()
         
@@ -198,19 +198,19 @@ public class UI {
     func basic(){
         DispatchQueue.main.async {
             let star = SKSpriteNode(texture: SKTexture(imageNamed: "Images/stars"))
-            star.setScale(1/6)
+            star.setScale(1/2)
             star.position = CGPoint(x: 250, y:175)
             self.stars.addChild(star)
             self.content.addChild(self.stars)
         }
         DispatchQueue.main.async {
             let star = SKSpriteNode(texture: SKTexture(imageNamed: "Images/stars"))
-            star.setScale(1/6)
+            star.setScale(1/2)
             star.position = CGPoint(x: 750, y:175)
             self.stars.addChild(star)
         }
         DispatchQueue.main.async {
-            self.rocket.setScale(1/6)
+            self.rocket.setScale(1/2)
             self.rocket.position = CGPoint(x: 150, y: 165)
             self.content.addChild(self.rocket)
         }
@@ -222,7 +222,29 @@ public class UI {
         }
     }
     func team(){
-        
+        DispatchQueue.main.async {
+            let star = SKSpriteNode(texture: SKTexture(imageNamed: "Images/stars"))
+            star.setScale(1/2)
+            star.position = CGPoint(x: 250, y:175)
+            self.stars.addChild(star)
+            self.content.addChild(self.stars)
+        }
+        DispatchQueue.main.async {
+            let pic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/astronaut"))
+            pic.setScale(1/5)
+            self.navigator.addChild(pic)
+            self.navigator.position = CGPoint(x: 150, y: 200)
+            
+            self.content.addChild(self.navigator)
+        }
+        DispatchQueue.main.async {
+            let pic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/astronaut"))
+            pic.setScale(1/5)
+            self.pilot.addChild(pic)
+            self.pilot.position = CGPoint(x: (512-150), y: 200)
+            self.content.addChild(self.pilot)
+        }
+
     }
     func scene1(){
         DispatchQueue.main.async {
@@ -287,7 +309,7 @@ public class UI {
     func createSpeach(){
         DispatchQueue.main.async {
             let bubble = SKSpriteNode(texture: SKTexture(imageNamed: "Images/bubble"))
-            bubble.setScale(1/6)
+            bubble.setScale(1/2)
             self.speach.addChild(bubble)
         }
         DispatchQueue.main.async {
@@ -317,17 +339,17 @@ public class UI {
     func addAvatars(){
         DispatchQueue.main.async {
             let pic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/photoshadow"))
-            pic.setScale(1/6)
+            pic.setScale(1/2)
             self.navigator.addChild(pic)
-            self.navigator.position = CGPoint(x: 60, y: 310)
+            self.navigator.position = CGPoint(x: 50, y: 310)
            
             self.content.addChild(self.navigator)
         }
         DispatchQueue.main.async {
             let pic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/photoshadow"))
-            pic.setScale(1/6)
+            pic.setScale(1/2)
             self.pilot.addChild(pic)
-            self.pilot.position = CGPoint(x: 85, y: 310)
+            self.pilot.position = CGPoint(x: 75, y: 310)
             self.content.addChild(self.pilot)
         }
         
