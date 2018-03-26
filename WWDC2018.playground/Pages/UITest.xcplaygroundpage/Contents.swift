@@ -55,6 +55,9 @@ public class UI {
         DispatchQueue.main.async {
             self.scene1()
         }
+        DispatchQueue.main.async {
+            self.scene2()
+        }
       // createHalfCricle()
         
     }
