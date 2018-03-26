@@ -2,22 +2,22 @@
 /*:
  # To Infinity and Beyond!
  - Note:
- **This playground was made to help children with mild autism and ADHD with collaboration and organizational skills.** As many of these children have innate characteristics that make them natural-born coders, such as their ability to hyperfocus and see problems differently, coding is a natural medium to help these children with the difficulties they face.
+ **This playground was designed to help children with mild autism and ADHD with collaboration and organizational skills.** As many of these children have innate characteristics that make them natural-born coders, such as their ability to hyperfocus and see problems differently, coding is a natural medium to help these children with the difficulties they face.
  
  ## Some Notes from Mission Control
  Hi there, coders! Recently, you both bought your very own planets. Together, you are going to go on a joyride through space to check out your new real estate.
  
- - Before you jouney through space, first **decide who is going to be the spaceship's pilot, and who is going to be the navigator.**
+ Before your journey begins...
  
- - To ensure everyone's safety on the jouney, try to **make sure that only one person is looking at the screen at a time**, unless otherwise noted. That way, you'll be able to watch out for any unexpected astroids headed your way.
+ - Run the program to see which one of you is going to be the spaceship's pilot and who is going to be the navigator.
  
- - During the mission, both the navigator and the pilot will be writing code that the other will be using. After you finish writing your code you should **fill in the green `Comment Template` located under where you wrote your code.**
+ - **Ensure only one person is looking at the screen at any point of time**, unless otherwise noted. That way you'll be able to watch out for unexpected asteroids coming your way!
  
- - Then **scroll up the comment template so it borders the top of the page** before passing the keyboard to your partner. Since the rocket has a limited fuel supply, it's important to code as efficently as possible. Writing good  `Comment Template`s and putting them at the top of the screen before passing it to your partner will help accomplish this.
+ - Before passing the keyboard back to your partner, **scroll up the comment template so it borders the top of the page**. Because fuel is limited on this mission, it is important you code efficiently. Writing good  `Comment Template`s and putting them at the top of the screen before passing it to your partner will accomplish this.
  
  If this seems confusing, don't worry. It will make a lot more sense after we blast off. :)
  :*/
-
+//TODO: add in add image stuff
 /*:
 ## Preparing for Takeoff
 ### Pilot, take the keyboard!
@@ -117,7 +117,6 @@ let directions = navigation.directions
  /*:
  7. Fill in the `Comment Template` below, then **scroll up you see this sentance at the top of the screen**(and your code is hidden).
 :*/
-
 //****************
 //Comment Template
 //****************
@@ -133,6 +132,7 @@ let directions = navigation.directions
 //type: Directions
 //reference: The route the rocket will be taking to get to each stop.
 /*:
+
  ### Pilot, take the keyboard!
  1. Let's give our rocket those directions!
  Set `rocket.directions` equal to the variable referring to the rocket's route, made by your teammate!
@@ -149,5 +149,3 @@ rocket.startEngine()
 /*:
  Now call the navigator over and blast off by running the program!
  :*/
-
-

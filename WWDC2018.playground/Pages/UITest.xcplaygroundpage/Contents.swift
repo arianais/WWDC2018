@@ -237,7 +237,7 @@ public class UI {
             self.content.addChild(self.rocket)
         }
         DispatchQueue.main.async {
-            self.button.setImage(UIImage(named: "button"), for: .normal)
+            self.button.setImage(UIImage(named: "Images/button"), for: .normal)
             self.button.addTarget(self, action: #selector(self.next), for: UIControlEvents.touchUpInside)
             self.view.addSubview(self.button)
             
