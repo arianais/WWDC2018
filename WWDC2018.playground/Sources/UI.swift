@@ -42,7 +42,7 @@ public class UI {
     }
     var narrative: [(Speaker, String)] = [(.pilot, "Starting up the rocket's engine...."), (.pilot, "Getting the rocket's current position..."), (.navigator, "Connecting to the rocket's navigation system..."), (.navigator, "Setting the route's starting and ending points..."), (.navigator, "Setting the route's first stop..."),  (.navigator, "Setting the route's second stop..."),  (.navigator, "Downloading directions from the navigation system..."), (.pilot, "Starting directions from the navigation system..."),  (.pilot, "Blasting off!")]
     
-    public init(){
+    public init(navigator: String, pilot: String){
         XCPlaygroundPage.currentPage.liveView = view
         let scene = SKScene(size: CGSize(width: 512, height: 369))
         scene.scaleMode = .aspectFit
@@ -51,7 +51,6 @@ public class UI {
         content.position = CGPoint(x: 0, y: 0)
         scene.addChild(content)
         //self.scene = 2
-        // team()
         DispatchQueue.main.async {
             self.scene1()
         }

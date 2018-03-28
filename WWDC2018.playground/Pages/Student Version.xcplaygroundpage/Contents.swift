@@ -28,6 +28,7 @@ public class UI {
     var name = SKLabelNode()
     var navigator = SKSpriteNode()
     var pilot = SKSpriteNode()
+
     
     //MARK: View Stuff
     var button = UIButton.init(frame: CGRect(x: 455, y: 10, width: 50, height: 50))
@@ -51,12 +52,15 @@ public class UI {
         content.position = CGPoint(x: 0, y: 0)
         scene.addChild(content)
         //self.scene = 2
-       // team()
         DispatchQueue.main.async {
-            self.scene1()
+           self.team()
+            
         }
         DispatchQueue.main.async {
-            self.scene2()
+           // self.scene1()
+        }
+        DispatchQueue.main.async {
+          //  self.scene2()
         }
       // createHalfCricle()
         
@@ -213,11 +217,6 @@ public class UI {
             self.stars.addChild(star)
         }
         DispatchQueue.main.async {
-            self.rocket.setScale(1/2)
-            self.rocket.position = CGPoint(x: 150, y: 165)
-            self.content.addChild(self.rocket)
-        }
-        DispatchQueue.main.async {
             self.button.setImage(UIImage(named: "Images/button"), for: .normal)
             self.button.addTarget(self, action: #selector(self.next), for: UIControlEvents.touchUpInside)
             self.view.addSubview(self.button)
@@ -226,40 +225,39 @@ public class UI {
     }
     func team(){
         DispatchQueue.main.async {
-            let star = SKSpriteNode(texture: SKTexture(imageNamed: "Images/stars"))
-            star.setScale(1/2)
-            star.position = CGPoint(x: 250, y:175)
-            self.stars.addChild(star)
-            self.content.addChild(self.stars)
-        }
-        DispatchQueue.main.async {
-            let pic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/astronaut"))
-            pic.setScale(1/5)
-            self.navigator.addChild(pic)
-            self.navigator.position = CGPoint(x: 150, y: 200)
-            
-            self.content.addChild(self.navigator)
-        }
-        DispatchQueue.main.async {
-            let pic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/astronaut"))
-            pic.setScale(1/5)
-            self.pilot.addChild(pic)
-            self.pilot.position = CGPoint(x: (512-150), y: 200)
-            self.content.addChild(self.pilot)
-        }
-
-    }
-    func scene1(){
-        DispatchQueue.main.async {
             self.basic()
         }
+//        DispatchQueue.main.async {
+//            let star = SKSpriteNode(texture: SKTexture(imageNamed: "Images/stars"))
+//            star.setScale(1/2)
+//            star.position = CGPoint(x: 250, y:175)
+//            self.stars.addChild(star)
+//            self.content.addChild(self.stars)
+//        }
+        DispatchQueue.main.async {
+            self.addAvatars("", pos1: CGPoint(x: 140, y: 185), pos2: CGPoint(x: (512-140), y: 185))
+//            let pic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/astronaut"))
+//            pic.setScale(1/5)
+//            self.navigator.addChild(pic)
+//            self.navigator.position = CGPoint(x: 150, y: 200)
+//
+//            self.content.addChild(self.navigator)
+        }
+    }
+    func scene1(){
+       
         DispatchQueue.main.async {
             self.earth.setScale(1/2)
             self.earth.position = CGPoint(x: 400, y: 20)
             self.content.addChild(self.earth)
         }
         DispatchQueue.main.async {
-            self.addAvatars()
+            self.rocket.setScale(1/2)
+            self.rocket.position = CGPoint(x: 150, y: 165)
+            self.content.addChild(self.rocket)
+        }
+        DispatchQueue.main.async {
+            self.addAvatars("sm", pos1: CGPoint(x: 50, y: 310), pos2: CGPoint(x: 75, y: 310))
         }
         DispatchQueue.main.async {
             self.createSpeach()
@@ -339,23 +337,52 @@ public class UI {
             self.content.addChild(self.speach)
         }
     }
-    func addAvatars(){
+    func addAvatars(_ ex: String, pos1: CGPoint, pos2: CGPoint){
+        let path = "Images/astronaut" + ex
         DispatchQueue.main.async {
-            let pic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/photoshadow"))
-            pic.setScale(1/2)
-            self.navigator.addChild(pic)
-            self.navigator.position = CGPoint(x: 50, y: 310)
-           
-            self.content.addChild(self.navigator)
+            let cam = Camera()
+            cam.retrieveImages({ (images) in
+                DispatchQueue.main.async {
+                    let pic = SKSpriteNode(texture: SKTexture(imageNamed: path))
+                    pic.setScale(1/2)
+                    let face = SKSpriteNode(texture: SKTexture(image: images[1]))
+                    face.setScale(((pic.texture?.size().width)! * 0.15)/(face.texture?.size().width)!)
+                    face.position = CGPoint(x: face.position.x, y:      ((pic.texture?.size().height)! * 0.1))
+
+                    self.navigator.addChild(face)
+                    self.navigator.addChild(pic)
+                    self.navigator.position = pos1
+                    self.content.addChild(self.navigator)
+                }
+                DispatchQueue.main.async {
+                    self.navigator.addChild(self.bigLb("Navigator"))
+                }
+                DispatchQueue.main.async {
+                    self.pilot.addChild(self.bigLb("Pilot"))
+                }
+                DispatchQueue.main.async {
+                    let pic = SKSpriteNode(texture: SKTexture(imageNamed: path))
+                    pic.setScale(1/2)
+                    let face = SKSpriteNode(texture: SKTexture(image: images[0]))
+                    face.setScale(((pic.texture?.size().width)! * 0.15)/(face.texture?.size().width)!)
+                    face.position = CGPoint(x: face.position.x, y:      ((pic.texture?.size().height)! * 0.1))
+                    self.pilot.addChild(face)
+                    self.pilot.addChild(pic)
+                    self.pilot.position = pos2
+                    self.content.addChild(self.pilot)
+                }
+            })
+            
+            
         }
-        DispatchQueue.main.async {
-            let pic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/photoshadow"))
-            pic.setScale(1/2)
-            self.pilot.addChild(pic)
-            self.pilot.position = CGPoint(x: 75, y: 310)
-            self.content.addChild(self.pilot)
-        }
-        
+    }
+    func bigLb(_ text: String) -> SKLabelNode{
+        let label = SKLabelNode(text: text)
+        label.fontName = UIFont.systemFont(ofSize: 1.0, weight: .heavy).fontName
+        label.fontColor = .white
+        label.fontSize = 25.0
+        label.position = CGPoint(x: label.position.x, y: -130)
+        return label
     }
 }
 

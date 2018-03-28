@@ -5,20 +5,22 @@
  **This playground was designed to help children with mild autism and ADHD with collaboration and organizational skills.** As many of these children have innate characteristics that make them natural-born coders, such as their ability to hyperfocus and see problems differently, coding is a natural medium to help these children with the difficulties they face.
  
  ## Some Notes from Mission Control
- Hi there, coders! Recently, you both bought your very own planets. Together, you are going to go on a joyride through space to check out your new real estate.
- 
- Before your journey begins...
- 
- - Run the program to see which one of you is going to be the spaceship's pilot and who is going to be the navigator.
+ Hi there, coders! Recently, you both bought your very own planets. Together, you are going to go on a joyride through space to check out your new real estate. **Here are some tips to make sure your journey goes as smoothly as possible.**
  
  - **Ensure only one person is looking at the screen at any point of time**, unless otherwise noted. That way you'll be able to watch out for unexpected asteroids coming your way!
  
  - Before passing the keyboard back to your partner, **scroll up the comment template so it borders the top of the page**. Because fuel is limited on this mission, it is important you code efficiently. Writing good  `Comment Template`s and putting them at the top of the screen before passing it to your partner will accomplish this.
  
  If this seems confusing, don't worry. It will make a lot more sense after we blast off. :)
- :*/
-//TODO: add in add image stuff
-/*:
+ 
+ ## Before your journey begins...
+ 
+ ![Directory Photo](Images/resources.png)
+1. **Make sure you've added pictures of both you and your partner to the "Resources" folder as two seperate images.** Each picture should contain a clear picture of your face (and no other faces), such as a school year book photo.
+ - Example:
+ ![Tim Cook Example Photo](Images/example2.png)
+2. Run the program to see which one of you is going to be the spaceship's pilot and who is going to be the navigator.
+
 ## Preparing for Takeoff
 ### Pilot, take the keyboard!
 1. First, make the rocket.
