@@ -1,18 +1,17 @@
 import Foundation
-
 public class Rocket{
     public var navigator: String? {
         didSet{
-            update(2)
-            group.enter()
-            group.leave()
+            DispatchQueue.global(qos: .default).async {
+                self.update(2)
+            }
         }
     }
     public var pilot: String? {
         didSet{
-            update(1)
-            group.enter()
-            group.leave()
+            DispatchQueue.global(qos: .default).async {
+                self.update(1)
+            }
         }
     }
     public var navigation: Navigation{
@@ -20,81 +19,117 @@ public class Rocket{
             self.navigation = value
         }
         get{
-            update(4)
-            group.enter()
-            group.leave()
+            DispatchQueue.global(qos: .default).async{
+                self.update(4)
+            }
+            group.notify(queue:   DispatchQueue.global(qos: .default)) {
+                print("hiii4")
+            }
             return Navigation()
         }
     }
     public var position: Position? {
         get{
-            update(3)
-            group.enter()
-            group.leave()
+            DispatchQueue.global(qos: .default).async {
+                self.update(3)
+            }
             return Position("Earth")
         }
     }
     public var directions: Directions? {
         didSet{
             update(10)
-            group.enter()
-            group.leave()
         }
     }
     
     private var status: [Bool] = [false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+    
     let group = DispatchGroup()
+    var stack = Stack<Int>()
+    
+    
+    var cookies = [-1]
+   
+    var count = 0
     public init() {
-        print("hello")
-        //self.navigation = Navigation()
-        self.update(0)
-        //let ui = UI()
         group.enter()
-        group.leave()
+        
+        
     }
     func update(_ i: Int)  {
+       
+            self.status[i] = true
+    
+        
+        
         
         //        DispatchQueue.global(attributes: .qosDefault).async {
-        print("i: \(i)")
-        status[i] = true
+        //        print("i: \(stack.peek()) )")
+        //        while( stack.peek() != -1){
+        //            status[stack.pop()!] = true
+        //        }
+        //        else{
+        //            print("aHiiiii")
+        //        }
+        
         //group.leave()
         //        }
         //         group.wait()
         //        print("a")
     }
     public func startEngine() {
-        update(11)
-        group.enter()
-        group.leave()
+        DispatchQueue.global(qos: .default).async {
+            self.update(0)
+        }
+    }
+    public func blastOff() {
+        
+        DispatchQueue.global(qos: .default).async {
+            self.group.leave()
+        }
+        group.wait()
+      
+        if (!self.status.contains(false)) {
+            //no errors
+           let ui = UI([self.navigator!, self.pilot!])
+       
+        }
+        else{
+            let ui = UI([])
+            var error = 0
+            while(self.status.count > error && self.status[error] != false) {
+                error += 1
+            }
+            if(error > 4 && error < 8){
+                ui.addError(step: error + 1, coder: UI.Speaker.navigator)
+            }
+            else{
+                ui.addError(step: error + 1, coder: UI.Speaker.pilot)
+            }
+            
+        }
+
     }
     public class Navigation: Rocket{
         //public var rocket: Rocket?
         public var start: Position? {
             didSet{
                 super.update(5)
-                super.group.enter()
-                super.group.leave()
             }
         }
         public var end: Position? {
             didSet{
                 super.update(6)
-                super.group.enter()
-                super.group.leave()
             }
         }
         public var stop1: String?{
             didSet{
                 super.update(7)
-                super.group.enter()
-                super.group.leave()
             }
         }
         public var stop2: String?{
             didSet{
                 super.update(8)
-                super.group.enter()
-                super.group.leave()
             }
         }
         override public var directions: Directions?{
@@ -102,10 +137,9 @@ public class Rocket{
                 self.directions = value
             }
             get{
+                print("step 9")
                 super.update(9)
-                super.group.enter()
-                super.group.leave()
-                return Directions()
+                return self.directions
             }
         }
         
@@ -122,3 +156,8 @@ public class Rocket{
         }
     }
 }
+
+
+
+
+

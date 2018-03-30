@@ -23,35 +23,43 @@
 
 ## Preparing for Takeoff
 ### Pilot, take the keyboard!
-1. First, make the rocket.
-Create a  `rocket` variable, and set it equal to `Rocket()`.
-Set `rocket.pilot` equal to a String of your first name, and set `rocket.navigator` equal to a String of your partner's first name.
+ 1. First, start up the rocket's engine by calling `rocket.startEngine()`.
+- Example:
+`rocket.startEngine()`
+ :*/
+let rocket = Rocket()
+rocket.startEngine()
+/*:
+2. Set `rocket.pilot` equal to a String of your first name.
+- Example:
+`rocket.pilot = "Tim"`
+:*/
+//and get ready for takeoff by calling `rocket.startEngine().`
+rocket.pilot = "Tim"
+/*:
+3. Set `rocket.navigator` equal to a String of your partner's first name.
 - Example:
 ```
-let rocket = Rocket()
-rocket.pilot = "Tim"
 rocket.navigator = "Ari"
 ```
 :*/
-let rocket = Rocket()
-rocket.pilot = "Tim"
 rocket.navigator = "Ari"
 /*:
-2. Next, let's swing by your new planet.
+4. Next, let's swing by your new planet.
 Create a `stop1` variable, and set it equal to a String of your planet's name.
 - Example:
 `let stop1 = "Tearth"`
  :*/
 let stop1 = "Tearth"
 /*:
-3. Now, make sure the rocket has your location.
+5. Now, make sure the rocket has your location.
 Create a `position` variable, and set it equal to the rocket's current position(`rocket.position`).
 - Example:
 `let position = rocket.positon`
 :*/
 let position = rocket.position
 /*:
-4. Fill in the `Comment Template` below, then **scroll up until you see this text at the top of your screen**(and your code is hidden!).
+6. Fill in the `Comment Template` below, then **scroll up until you see this text at the top of your screen**(and your code is hidden!).
 :*/
 //****************
 //Comment Template
@@ -69,21 +77,20 @@ let position = rocket.position
 //reference: Current position of the rocket.
 /*:
  ### Navigator, take the keyboard!
- 1. First, access the rocket.
- Create a `system` variable, and set it equal to the variable referring to the rocket.
+ 7. Lets access the rocket. Create a `system` variable, and set it equal to the variable referring to the rocket.
  - Example:
  `let system = rocket`
  :*/
 let system = rocket
 /*:
- 2. Now, get access to the rocketship's navigation.
+ 8. Now, get access to the rocketship's navigation.
  Create a `navigation` variable, and set it equal to the `system.navigation`.
  - Example:
  `let navigation = system.navigation`
  :*/
 let navigation = system.navigation
 /*:
- 3. We have to be sure the journey starts and ends right here.
+ 9. We have to be sure the journey starts and ends right here.
  Set `navigation.start` and `navigation.end` equal to the **position** variable that your pilot made above.
  - Example:
  ```
@@ -94,32 +101,30 @@ navigation.end = position
 navigation.start = position
 navigation.end = position
 /*:
- 4. Let's add the first stop on our intergalactic trip.
+ 10. Let's add the first stop on our intergalactic trip.
  Set `navigation.stop1` equal to the name of the pilot's planet defined above.
  - Example:
  `navigation.stop1 = stop1`
  :*/
 navigation.stop1 = stop1
 /*:
- 5. Let's add the second stop on our trip.
- Create a `stop2` variable, and set it equal to a String of your planet's name. Then, set `navigation.stop2` equal to `stop2`.
+ 11. Let's add the second stop on our trip. Create a `stop2` variable, and set it equal to a String of your planet's name. Then, set `navigation.stop2` equal to `stop2`.
  - Example:
-  ` ` `
+` ` `
 let stop2 = "Arianatopia"
 navigation.stop2 = stop2
- ` ` `
+` ` `
 :*/
 let stop2 = "Arianatopia"
 navigation.stop2 = stop2
 /*:
- 6. Let's send our navigation system the stops we just created for our trip.
- Create a `directions` variable, and set it equal to `navigation.directions`.
+ 12. Let's send our navigation system the stops we just created for our trip. Create a `directions` variable, and set it equal to `navigation.directions`.
  - Example:
  `let directions = navigation.directions`
- :*/
+:*/
 let directions = navigation.directions
- /*:
- 7. Fill in the `Comment Template` below, then **scroll up you see this sentance at the top of the screen**(and your code is hidden).
+/*:
+13. Fill in the `Comment Template` below, then **scroll up you see this sentance at the top of the screen**(and your code is hidden).
 :*/
 //****************
 //Comment Template
@@ -137,19 +142,14 @@ let directions = navigation.directions
 //reference: The route the rocket will be taking to get to each stop.
 /*:
 
- ### Pilot, take the keyboard!
- 1. Let's give our rocket those directions!
+### Pilot, take the keyboard!
+14. Let's give our rocket those directions!
  Set `rocket.directions` equal to the variable referring to the rocket's route, made by your teammate!
  - Example:
  `rocket.directions = directions`
   :*/
 rocket.directions = directions
- /*:
- 2. Start up the rocket's engine and get ready for takeoff by calling `rocket.startEngine()`.
- - Example:
- `rocket.startEngine()`
-  :*/
-rocket.startEngine()
 /*:
- Now call the navigator over and blast off by running the program!
+15. Now call the navigator over and watch the rocket blast off by running the program!
  :*/
+rocket.blastOff()

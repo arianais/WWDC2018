@@ -14,7 +14,7 @@ public class UI {
     let earth = SKSpriteNode(texture: SKTexture(imageNamed: "Images/earth"))
     let purpleplanet = SKSpriteNode(texture: SKTexture(imageNamed: "Images/purpleplanet"))
     let grayplanet = SKSpriteNode(texture: SKTexture(imageNamed: "Images/grayplanet"))
-    
+   
     //MARK: Extra Nodes
     let alien1 = SKSpriteNode(texture: SKTexture(imageNamed: "Images/aliens/alien0"))
     let alien2 = SKSpriteNode(texture: SKTexture(imageNamed: "Images/aliens/alien0"))
@@ -31,7 +31,8 @@ public class UI {
 
     
     //MARK: View Stuff
-    var button = UIButton.init(frame: CGRect(x: 455, y: 10, width: 50, height: 50))
+    var buttonNode = SKSpriteNode(texture: SKTexture(image: UIImage(named: "Images/button")!))
+    let button = UIButton.init(frame: CGRect(x: 455, y: 10, width: 50, height: 50))
     let view = SKView(frame: CGRect(x: 0, y: 0, width: 512, height: 369))
     var scene = 0
     
@@ -51,18 +52,9 @@ public class UI {
         view.presentScene(scene)
         content.position = CGPoint(x: 0, y: 0)
         scene.addChild(content)
-        //self.scene = 2
         DispatchQueue.main.async {
-           self.team()
-            
+            self.team()
         }
-        DispatchQueue.main.async {
-           // self.scene1()
-        }
-        DispatchQueue.main.async {
-          //  self.scene2()
-        }
-      // createHalfCricle()
         
     }
     func test(){
@@ -78,6 +70,14 @@ public class UI {
     @objc func next(_ selector: UIButton){
         switch scene {
         case 0:
+            DispatchQueue.main.async {
+                //self.scene1()
+            }
+            DispatchQueue.main.async {
+                //self.scene2()
+            }
+            self.scene = 1
+        case 1:
             if(narrative.count > 0){
                 switch narrative[0].0 {
                 case .navigator:
@@ -89,10 +89,10 @@ public class UI {
                 self.narrative.remove(at: 0)
             }
             else{
-                self.scene = 1
+                self.scene = 2
                 next(selector)
             }
-        case 1:
+        case 2:
             DispatchQueue.main.async {
                 self.speach.isHidden = true
                 self.navigator.isHidden = true
@@ -108,13 +108,13 @@ public class UI {
             DispatchQueue.main.async {
                 self.animateAliens()
             }
-            self.scene = 2
-        case 2:
+            self.scene = 3
+        case 3:
             scene3()
             moveStars(count: 1)
             moveOutPlanet(oldPlanet: self.purpleplanet, newPlanet: self.grayplanet)
             animateCommet()
-            self.scene = 3
+            self.scene = 4
         default:
             return
         }
@@ -217,10 +217,15 @@ public class UI {
             self.stars.addChild(star)
         }
         DispatchQueue.main.async {
-            self.button.setImage(UIImage(named: "Images/button"), for: .normal)
+            self.buttonNode.position = CGPoint(x: 475, y: 330)
+            self.buttonNode.setScale(1/2)
+
+             //button.backgroundColor = .red
             self.button.addTarget(self, action: #selector(self.next), for: UIControlEvents.touchUpInside)
+            self.content.addChild(self.buttonNode)
             self.view.addSubview(self.button)
-            
+            self.buttonNode.alpha = 0.0
+            self.button.isHidden = true
         }
     }
     func team(){
@@ -242,6 +247,19 @@ public class UI {
 //            self.navigator.position = CGPoint(x: 150, y: 200)
 //
 //            self.content.addChild(self.navigator)
+        }
+        DispatchQueue.main.async {
+            self.navigator.addChild(self.bigLb("Navigator"))
+        }
+        DispatchQueue.main.async {
+            self.pilot.addChild(self.bigLb("Pilot"))
+        }
+    }
+   public func addError(i: Int){
+        DispatchQueue.main.async {
+            self.buttonNode.run(SKAction.fadeIn(withDuration: 2.0))
+            self.button.isHidden = false
+            
         }
     }
     func scene1(){
@@ -353,12 +371,6 @@ public class UI {
                     self.navigator.addChild(pic)
                     self.navigator.position = pos1
                     self.content.addChild(self.navigator)
-                }
-                DispatchQueue.main.async {
-                    self.navigator.addChild(self.bigLb("Navigator"))
-                }
-                DispatchQueue.main.async {
-                    self.pilot.addChild(self.bigLb("Pilot"))
                 }
                 DispatchQueue.main.async {
                     let pic = SKSpriteNode(texture: SKTexture(imageNamed: path))

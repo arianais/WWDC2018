@@ -1,4 +1,4 @@
-//Welcome to the brains of the UI. You do not want to edit this file. Back away slowly and no harm will come :P.
+////Welcome to the brains of the UI. You do not want to edit this file. Back away slowly and no harm will come :P.
 
 import SpriteKit
 import XCPlayground
@@ -29,32 +29,41 @@ public class UI {
     var navigator = SKSpriteNode()
     var pilot = SKSpriteNode()
     
-    //MARK: View Stuff
-    var button = UIButton.init(frame: CGRect(x: 455, y: 10, width: 50, height: 50))
-    let view = SKView(frame: CGRect(x: 0, y: 0, width: 512, height: 369))
-    var scene = 0
     
-    //    //MARK: Narrative
-    //    var names = []
-    enum Speaker {
-        case pilot
-        case navigator
+    //MARK: View Stuff
+    var buttonNode = SKNode()
+    var errorNode = SKSpriteNode(texture: SKTexture(imageNamed: "Images/error"))
+    let view = SKView(frame: CGRect(x: 0, y: 0, width: 512, height: 369))
+    var scene = 1
+    
+    //MARK: Narrative
+    public var names:[String] 
+    public enum Speaker: String {
+        case pilot = "Pilot"
+        case navigator = "Navigator"
     }
     var narrative: [(Speaker, String)] = [(.pilot, "Starting up the rocket's engine...."), (.pilot, "Getting the rocket's current position..."), (.navigator, "Connecting to the rocket's navigation system..."), (.navigator, "Setting the route's starting and ending points..."), (.navigator, "Setting the route's first stop..."),  (.navigator, "Setting the route's second stop..."),  (.navigator, "Downloading directions from the navigation system..."), (.pilot, "Starting directions from the navigation system..."),  (.pilot, "Blasting off!")]
     
-    public init(navigator: String, pilot: String){
+    var images: [UIImage] = []
+    public init(_ names: [String]){
+        self.names = names
         XCPlaygroundPage.currentPage.liveView = view
+        
         let scene = SKScene(size: CGSize(width: 512, height: 369))
         scene.scaleMode = .aspectFit
         scene.backgroundColor = background
         view.presentScene(scene)
         content.position = CGPoint(x: 0, y: 0)
         scene.addChild(content)
-        //self.scene = 2
         DispatchQueue.main.async {
-            self.scene1()
+            let cam = Camera()
+            cam.retrieveImages({ (images) in
+                self.images = images
+                DispatchQueue.main.async {
+                    self.team()
+                }
+            })
         }
-        // createHalfCricle()
         
     }
     func test(){
@@ -67,9 +76,47 @@ public class UI {
         
     }
     
-    @objc func next(_ selector: UIButton){
+    @objc func next(){
+        print("hello")
         switch scene {
         case 0:
+            DispatchQueue.main.async {
+                self.scene2()
+            }
+            DispatchQueue.main.async{
+                self.navigator.run(self.fadeOut(self.navigator))
+            }
+            DispatchQueue.main.async{
+                self.pilot.run(self.fadeOut(self.pilot))
+            }
+            DispatchQueue.main.async{
+                self.createError()
+                let change = SKAction.run {
+                    self.errorNode.setScale(1/2)
+                    self.errorNode.position = CGPoint(x: 175, y: 20)
+                    self.speach.addChild(self.errorNode)
+                }
+                let errorIn = SKAction.run {
+                    self.errorNode.run(self.fadeIn(self.errorNode))
+                }
+                let sequence = SKAction.sequence([self.fadeOut(self.buttonNode), change, errorIn])
+                self.buttonNode.run(sequence)
+                //self.button.isHidden = true
+            }
+            self.scene = 1
+            
+        case 1:
+            DispatchQueue.main.async{
+                self.navigator.run(self.fadeOut(self.navigator))
+            }
+            DispatchQueue.main.async{
+                self.pilot.run(self.fadeOut(self.pilot))
+            }
+            DispatchQueue.main.async {
+                self.scene1()
+            }
+        case 2:
+            print("hhhhhhhhhh")
             if(narrative.count > 0){
                 switch narrative[0].0 {
                 case .navigator:
@@ -81,10 +128,10 @@ public class UI {
                 self.narrative.remove(at: 0)
             }
             else{
-                self.scene = 1
-                next(selector)
+                self.scene = 3
+                next()
             }
-        case 1:
+        case 3:
             DispatchQueue.main.async {
                 self.speach.isHidden = true
                 self.navigator.isHidden = true
@@ -100,13 +147,14 @@ public class UI {
             DispatchQueue.main.async {
                 self.animateAliens()
             }
-            self.scene = 2
-        case 2:
+            self.scene = 4
+        case 4:
             scene3()
             moveStars(count: 1)
             moveOutPlanet(oldPlanet: self.purpleplanet, newPlanet: self.grayplanet)
             animateCommet()
-            self.scene = 3
+            self.scene = 4
+        
         default:
             return
         }
@@ -195,6 +243,7 @@ public class UI {
     }
     //MARK: Scene Setup Functions
     func basic(){
+        
         DispatchQueue.main.async {
             let star = SKSpriteNode(texture: SKTexture(imageNamed: "Images/stars"))
             star.setScale(1/2)
@@ -202,63 +251,113 @@ public class UI {
             self.stars.addChild(star)
             self.content.addChild(self.stars)
         }
+        
         DispatchQueue.main.async {
             let star = SKSpriteNode(texture: SKTexture(imageNamed: "Images/stars"))
             star.setScale(1/2)
             star.position = CGPoint(x: 750, y:175)
             self.stars.addChild(star)
         }
+        
         DispatchQueue.main.async {
-            self.rocket.setScale(1/2)
-            self.rocket.position = CGPoint(x: 150, y: 165)
-            self.content.addChild(self.rocket)
-        }
-        DispatchQueue.main.async {
-            self.button.setImage(UIImage(named: "Images/button"), for: .normal)
-            self.button.addTarget(self, action: #selector(self.next), for: UIControlEvents.touchUpInside)
-            self.view.addSubview(self.button)
             
+            self.buttonNode = SKButtonNode(texture: SKTexture(imageNamed: "Images/button")) {
+                print("Button 1 pressed!")
+                self.next()
+            }
+            //button1.setTitle("Example 1")
+            //button1.position = CGPoint(x: 475, y: 330)
+         
+           // button.setScale(1/2)
+            self.buttonNode.position = CGPoint(x: 475, y: 330)
+           // self.buttonNode.alpha = 0.0
+            //self.content.addChild(self.buttonNode)
+            self.buttonNode.run(self.fadeIn(self.buttonNode))
+      
+           
+            self.content.addChild(self.buttonNode)
+//            self.button.backgroundColor = .red
+//            self.button.addTarget(self, action: #selector(self.next), for: UIControlEvents.touchUpInside)
+//            self.view.addSubview(self.button)
+
         }
     }
     func team(){
         DispatchQueue.main.async {
-            let star = SKSpriteNode(texture: SKTexture(imageNamed: "Images/stars"))
-            star.setScale(1/2)
-            star.position = CGPoint(x: 250, y:175)
-            self.stars.addChild(star)
-            self.content.addChild(self.stars)
-        }
-        DispatchQueue.main.async {
-            let pic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/astronaut"))
-            pic.setScale(1/5)
-            self.navigator.addChild(pic)
-            self.navigator.position = CGPoint(x: 150, y: 200)
-            
-            self.content.addChild(self.navigator)
-        }
-        DispatchQueue.main.async {
-            let pic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/astronaut"))
-            pic.setScale(1/5)
-            self.pilot.addChild(pic)
-            self.pilot.position = CGPoint(x: (512-150), y: 200)
-            self.content.addChild(self.pilot)
-        }
-        
-    }
-    func scene1(){
-        DispatchQueue.main.async {
             self.basic()
         }
+        //        DispatchQueue.main.async {
+        //            let star = SKSpriteNode(texture: SKTexture(imageNamed: "Images/stars"))
+        //            star.setScale(1/2)
+        //            star.position = CGPoint(x: 250, y:175)
+        //            self.stars.addChild(star)
+        //            self.content.addChild(self.stars)
+        //        }
+        DispatchQueue.main.async {
+            self.addAvatars("", pos1: CGPoint(x: 140, y: 185), pos2: CGPoint(x: (512-140), y: 185))
+            //            let pic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/astronaut"))
+            //            pic.setScale(1/5)
+            //            self.navigator.addChild(pic)
+            //            self.navigator.position = CGPoint(x: 150, y: 200)
+            //
+            //            self.content.addChild(self.navigator)
+        }
+        DispatchQueue.main.async {
+            self.navigator.addChild(self.bigLb("Navigator"))
+        }
+        DispatchQueue.main.async {
+            self.pilot.addChild(self.bigLb("Pilot"))
+        }
+    }
+    public func addError(step: Int, coder: Speaker){
+print("errororoororor")
+        DispatchQueue.main.async{
+            self.buttonNode.run(self.fadeIn(self.buttonNode))
+            //self.button.addTarget(self, action: #selector(self.next), for: UIControlEvents.touchUpInside)
+           // self.view.addSubview(self.button)
+            
+        }
+        DispatchQueue.main.async{
+            self.text.text = "Uh oh! \(coder.rawValue), take another look at step \(step)."
+        }
+        self.scene = 0
+       
+    }
+    func fadeIn(_ node: SKNode) -> SKAction{
+        node.alpha = 0.0
+        let sequence = SKAction.sequence([SKAction.fadeIn(withDuration: 1.0)])
+        return sequence
+    }
+    func fadeOut(_ node: SKNode) -> SKAction{
+        let remove = SKAction.run {
+           node.removeFromParent()
+        }
+        let sequence = SKAction.sequence([SKAction.fadeOut(withDuration: 1.0), remove])
+        return sequence
+    }
+    func scene1(){
+        
         DispatchQueue.main.async {
             self.earth.setScale(1/2)
             self.earth.position = CGPoint(x: 400, y: 20)
             self.content.addChild(self.earth)
+            self.earth.run(self.fadeIn(self.earth))
         }
         DispatchQueue.main.async {
-            self.addAvatars()
+            self.rocket.setScale(1/2)
+            self.rocket.position = CGPoint(x: 150, y: -110)
+            self.content.addChild(self.rocket)
         }
         DispatchQueue.main.async {
-            self.createSpeach()
+//            let wait = SKAction.wait(forDuration: 1.0)
+//            let add = SKAction.run{
+//                self.addAvatars("sm", pos1: CGPoint(x: 50, y: 310), pos2: CGPoint(x: 75, y: 310))
+//            }
+//            let sequence = SKAction.sequence([wait, add])
+//            self.content.run(sequence)
+        }
+        DispatchQueue.main.async {
+           self.createSpeach()
         }
     }
     func scene2(){
@@ -306,13 +405,26 @@ public class UI {
     }
     //MARK: User Utils
     func createSpeach(){
+        DispatchQueue.main.async{
+            print(self.names)
+            //self.createBubble("\(self.names[0]) (Pilot)", CGPoint(x: 300, y: 310))
+            //self.text.text = self.narrative[0].1
+        }
+    }
+    func createError(){
+        DispatchQueue.main.async{
+            let pos = CGPoint(x: 256, y: 185)
+            self.createBubble("Mission Control", pos)
+        }
+    }
+    func createBubble(_ name: String, _ pos: CGPoint){
         DispatchQueue.main.async {
             let bubble = SKSpriteNode(texture: SKTexture(imageNamed: "Images/bubble"))
             bubble.setScale(1/2)
             self.speach.addChild(bubble)
         }
         DispatchQueue.main.async {
-            self.text = SKLabelNode(text: self.narrative[0].1)
+           
             self.text.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
             self.text.position = CGPoint(x: -175, y: -15)
             self.text.fontSize = 14.0
@@ -322,7 +434,7 @@ public class UI {
             self.narrative.remove(at: 0)
         }
         DispatchQueue.main.async {
-            self.name = SKLabelNode(text: "Name" + " (Pilot)")
+            self.name = SKLabelNode(text: name)
             self.name.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
             self.name.position = CGPoint(x: -175, y: 5)
             self.name.fontSize = 14.0
@@ -331,29 +443,48 @@ public class UI {
             self.speach.addChild(self.name)
         }
         DispatchQueue.main.async {
-            self.speach.position = CGPoint(x: 300, y: 310)
+            self.speach.position = pos
             self.content.addChild(self.speach)
+            self.speach.run(self.fadeIn(self.speach))
         }
     }
-    func addAvatars(){
+    func addAvatars(_ ex: String, pos1: CGPoint, pos2: CGPoint){
+        let path = "Images/astronaut" + ex
         DispatchQueue.main.async {
-            let pic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/photoshadow"))
-            pic.setScale(1/2)
-            self.navigator.addChild(pic)
-            self.navigator.position = CGPoint(x: 50, y: 310)
             
-            self.content.addChild(self.navigator)
+                DispatchQueue.main.async {
+                    let pic = SKSpriteNode(texture: SKTexture(imageNamed: path))
+                    pic.setScale(1/2)
+                    let face = SKSpriteNode(texture: SKTexture(image: self.images[1]))
+                    face.setScale(((pic.texture?.size().width)! * 0.15)/(face.texture?.size().width)!)
+                    face.position = CGPoint(x: face.position.x, y:      ((pic.texture?.size().height)! * 0.1))
+                    
+                    self.navigator.addChild(face)
+                    self.navigator.addChild(pic)
+                    self.navigator.position = pos1
+                    self.content.addChild(self.navigator)
+                }
+                DispatchQueue.main.async {
+                    let pic = SKSpriteNode(texture: SKTexture(imageNamed: path))
+                    pic.setScale(1/2)
+                    let face = SKSpriteNode(texture: SKTexture(image:  self.images[0]))
+                    face.setScale(((pic.texture?.size().width)! * 0.15)/(face.texture?.size().width)!)
+                    face.position = CGPoint(x: face.position.x, y:      ((pic.texture?.size().height)! * 0.1))
+                    self.pilot.addChild(face)
+                    self.pilot.addChild(pic)
+                    self.pilot.position = pos2
+                    self.content.addChild(self.pilot)
+                }
         }
-        DispatchQueue.main.async {
-            let pic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/photoshadow"))
-            pic.setScale(1/2)
-            self.pilot.addChild(pic)
-            self.pilot.position = CGPoint(x: 75, y: 310)
-            self.content.addChild(self.pilot)
-        }
-        
+    }
+    func bigLb(_ text: String) -> SKLabelNode{
+        let label = SKLabelNode(text: text)
+        label.fontName = UIFont.systemFont(ofSize: 1.0, weight: .heavy).fontName
+        label.fontColor = .white
+        label.fontSize = 25.0
+        label.position = CGPoint(x: label.position.x, y: -130)
+        return label
     }
 }
-
 
 
