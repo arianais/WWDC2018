@@ -14,18 +14,9 @@ public class Rocket{
             }
         }
     }
-    public var navigation: Navigation{
-        set(value){
-            self.navigation = value
-        }
-        get{
-            DispatchQueue.global(qos: .default).async{
-                self.update(4)
-            }
-            group.notify(queue:   DispatchQueue.global(qos: .default)) {
-                print("hiii4")
-            }
-            return Navigation()
+    public func startNavigation() {
+        DispatchQueue.global(qos: .default).async {
+            self.update(9)
         }
     }
     public var position: Position? {
@@ -36,13 +27,51 @@ public class Rocket{
             return Position("Earth")
         }
     }
-    public var directions: Directions? {
+    public var start: Position? {
         didSet{
-            update(10)
+            DispatchQueue.global(qos: .default).async {
+                self.update(4)
+            }
         }
     }
+    public var end: Position? {
+        didSet{
+            DispatchQueue.global(qos: .default).async {
+                self.update(5)
+            }
+        }
+    }
+    public var stop1: String?{
+        didSet{
+            DispatchQueue.global(qos: .default).async {
+                self.update(6)
+            }
+        }
+    }
+    public var stop2: String?{
+        didSet{
+            DispatchQueue.global(qos: .default).async {
+                self.update(7)
+            }
+        }
+    }
+
     
-    private var status: [Bool] = [false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+    public var directions: Directions? {
+        didSet{
+            DispatchQueue.global(qos: .default).async {
+                self.update(10)
+            }
+        }
+    }
+    public func loadDirections() -> Directions{
+        DispatchQueue.global(qos: .default).async {
+            self.update(8)
+        }
+        return Directions()
+    }
+    
+    private var status: [Bool] = [false, false, false, false, false, false, false, false, false, false, false]
     
     let group = DispatchGroup()
     var stack = Stack<Int>()
@@ -96,52 +125,48 @@ public class Rocket{
         }
         else{
             let ui = UI([])
+            print("error")
             var error = 0
             while(self.status.count > error && self.status[error] != false) {
                 error += 1
             }
             if(error > 4 && error < 8){
+                print(error)
                 ui.addError(step: error + 1, coder: UI.Speaker.navigator)
             }
             else{
+                print(error)
                 ui.addError(step: error + 1, coder: UI.Speaker.pilot)
             }
             
         }
+        
 
     }
     public class Navigation: Rocket{
         //public var rocket: Rocket?
-        public var start: Position? {
-            didSet{
-                super.update(5)
-            }
-        }
-        public var end: Position? {
-            didSet{
-                super.update(6)
-            }
-        }
-        public var stop1: String?{
-            didSet{
-                super.update(7)
-            }
-        }
-        public var stop2: String?{
-            didSet{
-                super.update(8)
-            }
-        }
-        override public var directions: Directions?{
-            set(value){
-                self.directions = value
-            }
-            get{
-                print("step 9")
-                super.update(9)
-                return self.directions
-            }
-        }
+//        public var start: Position? {
+//            didSet{
+//                print("hey")
+//                super.update(5)
+//            }
+//        }
+//        public var end: Position? {
+//            didSet{
+//                super.update(6)
+//            }
+//        }
+//        public var stop1: String?{
+//            didSet{
+//                super.update(7)
+//            }
+//        }
+//        public var stop2: String?{
+//            didSet{
+//                super.update(8)
+//            }
+//        }
+       
         
     }
     public class Position{
