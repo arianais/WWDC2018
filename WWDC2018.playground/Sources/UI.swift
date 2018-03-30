@@ -132,6 +132,8 @@ public class UI {
                 next()
             }
             if(self.narrative.count == 0){
+                let sound = SKAction.playSoundFileNamed("Sounds/takeOff.m4a", waitForCompletion: false)
+                self.content.run(sound)
                 self.rocket.run(SKAction.moveTo(y: 165, duration: 2.0))
             }
             
@@ -155,7 +157,7 @@ public class UI {
                 self.animateAliens()
             }
             DispatchQueue.main.async{
-                self.removeButton(10)
+                self.removeButton(23.0)
             }
             self.scene = 4
         case 4:
@@ -296,7 +298,7 @@ public class UI {
         let change = SKAction.run {
             self.content.addChild(self.buttonNode)
         }
-        let sequence = SKAction.sequence([self.fadeOut(self.buttonNode), change, self.fadeIn(self.buttonNode)])
+        let sequence = SKAction.sequence([ self.fadeOut(self.buttonNode), change, wait, self.fadeIn(self.buttonNode)])
         self.buttonNode.run(sequence)
     }
     func moveOutPlanet(oldPlanet: SKSpriteNode?, newPlanet: SKSpriteNode?){
@@ -503,7 +505,7 @@ print("errororoororor")
         
         DispatchQueue.main.async {
            self.createSpeach()
-           self.removeButton(0)
+           self.removeButton(0.0)
         }
     }
     func scene2(){
