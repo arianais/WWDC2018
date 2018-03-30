@@ -22,5 +22,18 @@ rocket.startNavigation()
 rocket.directions = directions
 rocket.blastOff()
 
+/*:
+ 8. Now, get access to the rocketship's navigation.
+ Create a `navigation` variable, and set it equal to the `system.navigation`.
+ - Example:
+ `let navigation = system.navigation`
+ :*/
+//let navigation = system.navigation
+
+//variable: (FILL IN NAME OF VARIABLE)
+//type: Navigation
+//reference: Refers to the rocket's navigation.
+//-----
+
 
 
