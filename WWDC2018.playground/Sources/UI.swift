@@ -237,13 +237,9 @@ public class UI {
             movement.append(change)
             movement.append(circle)
         }
-        //   let movementSequence = SKAction.sequence(movement)
-        // let fadeSequence = SKAction.sequence(fade)
         lb.run(SKAction.sequence([wait, SKAction.fadeIn(withDuration: 1.0), SKAction.wait(forDuration: 22.0), SKAction.fadeOut(withDuration: 1.0), remove]))
         commet.run( SKAction.sequence(movement))
          self.content.run(SKAction.sequence([wait, sound]))
-        
-        //commet.run(SKAction.group([movementSequence, fadeSequence]))
     }
     func createHalfCricle(){
         let line2 = UIBezierPath()
@@ -251,15 +247,11 @@ public class UI {
         line2.addCurve(to: CGPoint(x:0, y:200), controlPoint1: CGPoint(x:300, y:325), controlPoint2: CGPoint(x:200, y:325))
         line2.miterLimit = 4
         line2.lineCapStyle = .round
-        // make it dashed
         let line2Dashed = SKShapeNode(path: line2.cgPath.copy(dashingWithPhase: 2, lengths: [4, 4]))
         content.addChild(line2Dashed)
-        
-        // add the last straight line
         let line3 = UIBezierPath()
         line3.move(to: CGPoint(x:300, y:25))
         line3.addLine(to: CGPoint(x:375, y:25))
-        
     }
     func animateAliens(){
         let order = [0,1,2,2,2,3,3,3,3,3,4,5,6,6,6,7,8,8,8,8,8,8,8,8,8,9,10,11,12,13,14,15,16,17,18,19,19,19,19,19,19,20,21,22,22,22,23,24,25,25,25,26,26,26,26,26,27,27,27,27,27,28,27,29,28,27,29,28,27,29,27]
@@ -354,6 +346,7 @@ public class UI {
             self.buttonNode = SKButtonNode(texture: SKTexture(imageNamed: "Images/button")) {
                 self.next()
             }
+            self.buttonNode.setScale(1/2)
             //button1.setTitle("Example 1")
             //button1.position = CGPoint(x: 475, y: 330)
          
