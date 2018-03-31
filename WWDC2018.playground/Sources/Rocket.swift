@@ -81,25 +81,7 @@ public class Rocket{
         
     }
     func update(_ i: Int)  {
-       
             self.status[i] = true
-    
-        
-        
-        
-        //        DispatchQueue.global(attributes: .qosDefault).async {
-        //        print("i: \(stack.peek()) )")
-        //        while( stack.peek() != -1){
-        //            status[stack.pop()!] = true
-        //        }
-        //        else{
-        //            print("aHiiiii")
-        //        }
-        
-        //group.leave()
-        //        }
-        //         group.wait()
-        //        print("a")
     }
     public func startEngine() {
         DispatchQueue.global(qos: .default).async {
@@ -115,22 +97,19 @@ public class Rocket{
       
         if (!self.status.contains(false)) {
             //no errors
-           let ui = UI([self.navigator!, self.pilot!])
+           let ui = UI([self.navigator!, self.pilot!, self.stop1!, self.stop2!])
        
         }
         else{
             let ui = UI([])
-            print("error")
             var error = 0
             while(self.status.count > error && self.status[error] != false) {
                 error += 1
             }
             if(error > 4 && error < 8){
-                print(error)
                 ui.addError(step: error + 1, coder: UI.Speaker.navigator)
             }
             else{
-                print(error)
                 ui.addError(step: error + 1, coder: UI.Speaker.pilot)
             }
             

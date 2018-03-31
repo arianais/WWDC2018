@@ -77,7 +77,6 @@ public class UI {
     }
     
     @objc func next(){
-        print("hello")
         switch scene {
         case 0:
            
@@ -221,7 +220,15 @@ public class UI {
         let wait = SKAction.wait(forDuration: 10.0)
         let order = [1,2,3,4,5,6,7]
         var movement = [wait, circle]
-        
+        let lb = self.bigLb("\(self.names[3])")
+    
+            lb.position = CGPoint(x: (lb.frame.width * 0.5) + 25, y: 325)
+          lb.alpha = 0.0
+            self.content.addChild(lb)
+     
+        let remove = SKAction.run {
+            lb.removeFromParent()
+        }
         for e in order {
             let change =  SKAction.run {
                 self.commet.texture = SKTexture(imageNamed: "Images/commets/commet\(e)")
@@ -232,7 +239,7 @@ public class UI {
         }
         //   let movementSequence = SKAction.sequence(movement)
         // let fadeSequence = SKAction.sequence(fade)
-        
+        lb.run(SKAction.sequence([wait, SKAction.fadeIn(withDuration: 1.0), SKAction.wait(forDuration: 22.0), SKAction.fadeOut(withDuration: 1.0), remove]))
         commet.run( SKAction.sequence(movement))
          self.content.run(SKAction.sequence([wait, sound]))
         
@@ -258,18 +265,24 @@ public class UI {
         let order = [0,1,2,2,2,3,3,3,3,3,4,5,6,6,6,7,8,8,8,8,8,8,8,8,8,9,10,11,12,13,14,15,16,17,18,19,19,19,19,19,19,20,21,22,22,22,23,24,25,25,25,26,26,26,26,26,27,27,27,27,27,28,27,29,28,27,29,28,27,29,27]
         var textures: [SKTexture] = []
         let sound = SKAction.playSoundFileNamed("Sounds/minions.m4a", waitForCompletion: false)
-        let add = SKAction.run {
-           let lb = self.bigLb("\(self.names[0])")
-            lb.position = CGPoint(x: 0, y: 250)
+        let lb = self.bigLb("\(self.names[2])")
+   
+            lb.position = CGPoint(x: (lb.frame.width * 0.5) + 25, y: 325)
+        lb.alpha = 0.0
             self.content.addChild(lb)
+
+        let remove = SKAction.run {
+            lb.removeFromParent()
         }
+        
         for e in order {
             textures.append(SKTexture(imageNamed: "Images/aliens/alien\(e)"))
         }
         let animate = SKAction.animate(with: textures, timePerFrame: (0.2))
         let wait = SKAction.wait(forDuration: 10.0)
         self.content.run(SKAction.sequence([wait, sound]))
-        self.content.run(SKAction.sequence([wait, add]))
+       // self.content.run(SKAction.sequence([wait, add]))
+        lb.run(SKAction.sequence([wait, SKAction.fadeIn(withDuration: 1.0), SKAction.wait(forDuration: 11.0), SKAction.fadeOut(withDuration: 1.0), remove]))
         alien1.run(SKAction.sequence([wait, animate]))
         alien2.run(SKAction.sequence([wait, animate]))
         alien3.run(SKAction.sequence([wait, animate]))
@@ -339,7 +352,6 @@ public class UI {
         DispatchQueue.main.async {
             
             self.buttonNode = SKButtonNode(texture: SKTexture(imageNamed: "Images/button")) {
-                print("Button 1 pressed!")
                 self.next()
             }
             //button1.setTitle("Example 1")
@@ -388,7 +400,6 @@ public class UI {
         }
     }
     func end(){
-        print("hehlloooo")
         let lb = self.bigLb("Amazing teamwork!👏")
         lb.position = CGPoint(x: 256, y:185 )
         lb.fontSize = 35
@@ -417,7 +428,6 @@ public class UI {
         }
     }
     public func addError(step: Int, coder: Speaker){
-print("errororoororor")
         DispatchQueue.main.async{
             self.buttonNode.run(self.fadeIn(self.buttonNode))
             //self.button.addTarget(self, action: #selector(self.next), for: UIControlEvents.touchUpInside)
@@ -506,7 +516,6 @@ print("errororoororor")
             self.pilot.addChild(pic)
              self.content.addChild(self.pilot)
           
-            print("dhow")
         }
      //   self.pilot.run(add)
      
@@ -565,7 +574,6 @@ print("errororoororor")
     //MARK: User Utils
     func createSpeach(){
         DispatchQueue.main.async{
-            print(self.names)
             self.createBubble("\(self.names[1]) (Pilot)", CGPoint(x: 300, y: 310))
             self.text.text = self.narrative[0].1
         }

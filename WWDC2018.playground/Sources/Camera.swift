@@ -38,7 +38,6 @@ public class Camera{
         try? faceDetectionRequest.perform([faceDetection], on: image.cgImage!)
         if let results = faceDetection.results as? [VNFaceObservation] {
             if !results.isEmpty {
-                print(results)
                 DispatchQueue.main.async {
                     let observation = results.last!.boundingBox
                     var length1 = max(observation.width, observation.height)

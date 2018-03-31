@@ -294,7 +294,6 @@ public class SKButtonNode: SKNode {
     //MARK: - User Interaction Handling
     
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("touches began")
         guard let _ = touches.first, enabled else { return }
         state = .highlighted
         runAction()
@@ -302,7 +301,6 @@ public class SKButtonNode: SKNode {
     
     override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         //This method will make sure that the use is still touching the area of the button
-        print("touches moved")
         guard let touch = touches.first, enabled else { return }
         let touchPoint = touch.location(in: self)
         let touchArea = CGRect(origin: CGPoint(x: -size.width/2, y: -size.height/2), size: size)
@@ -314,13 +312,11 @@ public class SKButtonNode: SKNode {
     }
     
     override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("touches ended")
         guard let _ = touches.first else { return }
         runAction()
     }
     
     override public func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("touches canceled")
         state = .normal
         runAction()
     }

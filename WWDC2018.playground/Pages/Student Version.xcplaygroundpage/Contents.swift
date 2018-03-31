@@ -35,7 +35,7 @@ let rocket = Rocket()
 
 /*:
  4. Next, let's swing by your new planet.
- Create a `stop1` variable, and set it equal to a String of your planet's name.
+ Create a `planet` variable, and set it equal to a String of your planet's name.
  */
 
 /*:
@@ -71,12 +71,11 @@ let rocket = Rocket()
  */
 
 /*:
- 9. Let's add the first stop on our intergalactic trip.
- Set `system.stop1` equal to the name of the pilot's planet defined above.
+ 9. Let's add the second stop on our intergalactic trip. Create a `stop` variable, and set it equal to a String of your planet's name. Then, set `system.stop1` equal to `stop1`.
 */
 
 /*:
- 10. Let's add the second stop on our trip. Create a `stop2` variable, and set it equal to a String of your planet's name. Then, set `system.stop2` equal to `stop2`.
+ 10. Let's add the second stop on our trip. Set `system.stop2` equal to the name of the pilot's planet defined above.
  */
 
 /*:
