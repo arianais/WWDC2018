@@ -15,60 +15,58 @@
  ## Before your journey begins...
  
  ![Directory Photo](Images/resources.png)
-1. **Make sure you've added pictures of both you and your partner to the "Resources" folder as two separate images.** Each picture should contain a clear picture of your face (and no other faces), such as a school yearbook photo.
+ 1. **Make sure you've added pictures of both you and your partner to the "Resources" folder as two separate images.** Each picture should contain a clear picture of your face (and no other faces), such as a school yearbook photo.
  * Callout(Sample Photos):
  ![Photo of Sample Photos](Images/examples.png)
-
-2. Run the program to see which one of you is going to be the spaceship's pilot and who is going to be the navigator.
-## Preparing for Takeoff
-### Pilot, take the keyboard!
+ 
+ 2. Run the program to see which one of you is going to be the spaceship's pilot and who is going to be the navigator.
+ ## Preparing for Takeoff
+ ### Pilot, take the keyboard!
  1. First, start up the rocket's engine by calling `rocket.startEngine()`.
-
-- Example:
-`rocket.startEngine()`
+ 
+ - Example:
+ `rocket.startEngine()`
  */
 let rocket = Rocket()
-rocket.startEngine()
 /*:
-2. Set `rocket.pilot` equal to a String of your first name.
-- Example:
-`rocket.pilot = "Tim"`
+ 2. Set `rocket.pilot` equal to a String of your first name.
+ - Example:
+ `rocket.pilot = "Tim"`
 */
 
-rocket.pilot = "Tim"
 /*:
-3. Set `rocket.navigator` equal to a String of your partner's first name.
-- Example:
-```
-rocket.navigator = "Ari"
-```
-*/
-rocket.navigator = "Ari"
-/*:
-4. Next, let's swing by your new planet.
-Create a `stop1` variable, and set it equal to a String of your planet's name.
-- Example:
-`let stop1 = "Tearth"`
+ 3. Set `rocket.navigator` equal to a String of your partner's first name.
+ - Example:
+ ```
+ rocket.navigator = "Ari"
+ ```
  */
-let stop1 = "Tearth"
+
 /*:
-5. Now, make sure the rocket has your location.
-Create a `position` variable, and set it equal to the rocket's current position(`rocket.position`).
-- Example:
-`let position = rocket.positon`
-*/
-let position = rocket.position
+ 4. Next, let's swing by your new planet.
+ Create a `stop1` variable, and set it equal to a String of your planet's name.
+ - Example:
+ `let stop1 = "Tearth"`
+ */
+
 /*:
-6. Fill in the `Comment Template` below, then **scroll up until you see this text at the top of your screen**(and your code is hidden!).
-*/
+ 5. Now, make sure the rocket has your location.
+ Create a `position` variable, and set it equal to the rocket's current position(`rocket.position`).
+ - Example:
+ `let position = rocket.positon`
+ */
+
+/*:
+ 6. Fill in the `Comment Template` below, then **scroll up until you see this text at the top of your screen**(and your code is hidden!).
+ */
 //****************
 //Comment Template
 //****************
-//variable: stop1
+//variable: (FILL IN NAME OF VARIABLE)
 //type: String
 //reference: The name of the pilot's planet.
 //-----
-//variable: rocket
+//variable: (FILL IN NAME OF VARIABLE)
 //type: Rocket
 //reference: The rocket you will be taking on your journey
 //-----
@@ -80,83 +78,78 @@ let position = rocket.position
  7. Let's access the rocket. Create a `system` variable, and set it equal to the variable referring to the rocket.
  - Example:
  `let system = rocket`
- */
-let system = rocket
+*/
 
 /*:
  8. We have to be sure the journey starts and ends right here.
  Set `system.start` and `system.end` equal to the **position** variable that your pilot made above.
  - Example:
  ```
-system.start = position
-system.end = position
-```
-*/
-system.start = position
-system.end = position
+ system.start = position
+ system.end = position
+ ```
+ */
+
 /*:
  9. Let's add the first stop on our intergalactic trip.
  Set `system.stop1` equal to the name of the pilot's planet defined above.
  - Example:
  `system.stop1 = stop1`
  */
-system.stop1 = stop1
+
 /*:
  10. Let's add the second stop on our trip. Create a `stop2` variable, and set it equal to a String of your planet's name. Then, set `system.stop2` equal to `stop2`.
  - Example:
-` ` `
-let stop2 = "Arianatopia"
-system.stop2 = stop2
-` ` `
-*/
-let stop2 = "Arianatopia"
-system.stop2 = stop2
+ ` ` `
+ let stop2 = "Arianatopia"
+ system.stop2 = stop2
+ ` ` `
+ */
+
 /*:
  11. Let get the directions four our journey. Create a `directions` variable, and set it equal to `system.loadDirections()`.
  - Example:
  `system.loadDirections()`
-*/
-let directions = system.loadDirections()
+ */
 
 /*:
-12. Fill in the `Comment Template` below, then **scroll up you see this sentance at the top of the screen**(and your code is hidden).
-*/
+ 12. Fill in the `Comment Template` below, then **scroll up you see this sentance at the top of the screen**(and your code is hidden).
+ */
 //****************
 //Comment Template
 //****************
-//variable: stop2
+//variable: (FILL IN NAME OF VARIABLE)
 //type: String
 //reference: The name of the navigator's planet.
 //-----
-//variable: directions
+//variable: (FILL IN NAME OF VARIABLE)
 //type: Directions
 //reference: The route the rocket will be taking to get to each stop.
 /*:
-
-### Pilot, take the keyboard!
-13. Let's give our rocket those directions!
+ ### Pilot, take the keyboard!
+ 13. Let's give our rocket those directions!
  Set `rocket.directions` equal to the variable referring to the rocket's route, made by your teammate!
  - Example:
  `rocket.directions = directions`
-*/
-rocket.directions = directions
+ */
+
 /*:
-14. Have the rocket start guiding you on your jouney by calling `rocket.startNavigation()`.
+ 14. Have the rocket start guiding you on your jouney by calling `rocket.startNavigation()`.
  - Example:
  `rocket.startNavigation()`
-*/
-rocket.startNavigation()
-/*: 
-15. Now call the navigator over and watch the rocket blast off by running the program!
-*/
+ */
+
+/*:
+ 15. Now call the navigator over and watch the rocket blast off by running the program!
+ */
 rocket.blastOff()
 /*:
-## Credits
-### Songs
-* "Star Wars Main Title and Arrival at Naboo" - London Symphony Orchestra, London Voices, & New London Children's Chior
-* "Minions - Banana Song" - Dream Soundtracks
-* "Star Trek: The Next Generation - Main Title" - Dennis McCarthy, Jerry Goldsmith
-* "Theme from 001(Also Spracht Zarathustra)" - London Philharmonic Orchestra
-### Code
-* "SKButtonNode" (https://github.com/bajtyngier/SKButtonNode/blob/master/SKButtonNode/SKButtonNode/SKButtonNode.swift) - Konrad Bajtyngier
-*/
+ ## Credits
+ ### Songs
+ * "Star Wars Main Title and Arrival at Naboo" - London Symphony Orchestra, London Voices, & New London Children's Chior
+ * "Minions - Banana Song" - Dream Soundtracks
+ * "Star Trek: The Next Generation - Main Title" - Dennis McCarthy, Jerry Goldsmith
+ * "Theme from 001(Also Spracht Zarathustra)" - London Philharmonic Orchestra
+ ### Code
+ * "SKButtonNode" (https://github.com/bajtyngier/SKButtonNode/blob/master/SKButtonNode/SKButtonNode/SKButtonNode.swift) - Konrad Bajtyngier
+ */

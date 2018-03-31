@@ -72,13 +72,8 @@ public class Rocket{
     }
     
     private var status: [Bool] = [false, false, false, false, false, false, false, false, false, false, false]
-    
     let group = DispatchGroup()
-    var stack = Stack<Int>()
-    
-    
     var cookies = [-1]
-   
     var count = 0
     public init() {
         group.enter()

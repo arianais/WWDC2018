@@ -42,7 +42,7 @@ public class UI {
         case pilot = "Pilot"
         case navigator = "Navigator"
     }
-    var narrative: [(Speaker, String)] = [(.pilot, "Starting up the rocket's engine...."), (.pilot, "Getting the rocket's current position..."), (.navigator, "Connecting to the rocket's navigation system..."), (.navigator, "Setting the route's starting and ending points..."), (.navigator, "Setting the route's first stop..."),  (.navigator, "Setting the route's second stop..."),  (.navigator, "Downloading directions from the navigation system..."), (.pilot, "Starting directions from the navigation system..."),  (.pilot, "Blasting off!")]
+    var narrative: [(Speaker, String)] = [(.pilot, "Starting up the rocket's engine...."), (.pilot, "Setting up the controls...."),(.pilot, "Starting up the rocket's engine...."), (.pilot, "Getting the rocket's current position..."), (.navigator, "Connecting to the rocket's navigation system..."), (.navigator, "Setting the route's starting and ending points..."), (.navigator, "Setting the route's first stop..."),  (.navigator, "Setting the route's second stop..."),  (.navigator, "Downloading directions from the navigation system..."), (.pilot, "Getting directions from the navigation system..."), (.pilot, "Starting directions from the navigation system..."),  (.pilot, "Blasting off!")]
     
     var images: [UIImage] = []
     public init(_ names: [String]){
@@ -115,14 +115,16 @@ public class UI {
             if(narrative.count > 0){
                 switch narrative[0].0 {
                 case .navigator:
-                    self.name.text = "\(names[0]) (Navigator)"//add name
-                    reAdd(0.25, self.pilot)
-                    reAdd(1.0, self.navigator)
+                    
+                    self.pilot.children[0].alpha = 0.25
+                    self.pilot.children[1].alpha = 0.25
+                    self.reAdd(1.0, self.navigator)
+                    self.name.text = "\(names[0]) (Navigator)"
                 default:
-                    self.name.text = "\(names[1]) (Pilot)"//add name
-                   
-                    reAdd(0.25, self.navigator)
-                     reAdd(1.0, self.pilot)
+                    self.navigator.children[0].alpha = 0.25
+                    self.navigator.children[1].alpha = 0.25
+                    self.reAdd(1.0, self.pilot)
+                    self.name.text = "\(names[1]) (Pilot)"
                 }
                 self.text.text = narrative[0].1
                 self.narrative.remove(at: 0)
@@ -131,7 +133,7 @@ public class UI {
                 self.scene = 3
                 next()
             }
-            if(self.narrative.count == 0){
+            if(self.narrative.count == 0 && self.scene == 2){
                 let sound = SKAction.playSoundFileNamed("Sounds/takeOff.m4a", waitForCompletion: false)
                 self.content.run(sound)
                 self.rocket.run(SKAction.moveTo(y: 165, duration: 2.0))
@@ -172,6 +174,9 @@ public class UI {
             }
             DispatchQueue.main.async {
                 self.animateCommet()
+            }
+            DispatchQueue.main.async{
+                self.removeButton(32.0)
             }
             self.scene = 5
         case 5:
@@ -252,13 +257,19 @@ public class UI {
     func animateAliens(){
         let order = [0,1,2,2,2,3,3,3,3,3,4,5,6,6,6,7,8,8,8,8,8,8,8,8,8,9,10,11,12,13,14,15,16,17,18,19,19,19,19,19,19,20,21,22,22,22,23,24,25,25,25,26,26,26,26,26,27,27,27,27,27,28,27,29,28,27,29,28,27,29,27]
         var textures: [SKTexture] = []
-        let sound = SKAction.playSoundFileNamed("Sounds/walle.m4a", waitForCompletion: false)
+        let sound = SKAction.playSoundFileNamed("Sounds/minions.m4a", waitForCompletion: false)
+        let add = SKAction.run {
+           let lb = self.bigLb("\(self.names[0])")
+            lb.position = CGPoint(x: 0, y: 250)
+            self.content.addChild(lb)
+        }
         for e in order {
             textures.append(SKTexture(imageNamed: "Images/aliens/alien\(e)"))
         }
         let animate = SKAction.animate(with: textures, timePerFrame: (0.2))
         let wait = SKAction.wait(forDuration: 10.0)
         self.content.run(SKAction.sequence([wait, sound]))
+        self.content.run(SKAction.sequence([wait, add]))
         alien1.run(SKAction.sequence([wait, animate]))
         alien2.run(SKAction.sequence([wait, animate]))
         alien3.run(SKAction.sequence([wait, animate]))
