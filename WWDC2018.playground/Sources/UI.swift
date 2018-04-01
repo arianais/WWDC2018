@@ -64,28 +64,28 @@ public class UI {
         }
     }
     //MARK: Button Utils
-    //preforms button segues
+    //next: preforms button segues
     @objc func next(){
         switch scene {
         case 0:
-        DispatchQueue.main.async{
-            self.navigator.run(self.fadeOut(self.navigator))
-        }
-        DispatchQueue.main.async{
-            self.pilot.run(self.fadeOut(self.pilot))
-        }
-        DispatchQueue.main.async{
-            self.createError()
-            let change = SKAction.run {
-                self.errorNode.setScale(1/2)
-                self.errorNode.position = CGPoint(x: 175, y: 20)
-                self.speach.addChild(self.errorNode)
+            DispatchQueue.main.async{
+                self.navigator.run(self.fadeOut(self.navigator))
             }
-            let errorIn = SKAction.run {
-                self.errorNode.run(self.fadeIn(self.errorNode))
+            DispatchQueue.main.async{
+                self.pilot.run(self.fadeOut(self.pilot))
             }
-            let sequence = SKAction.sequence([self.fadeOut(self.buttonNode), change, errorIn])
-            self.buttonNode.run(sequence)
+            DispatchQueue.main.async{
+                self.createError()
+                let change = SKAction.run {
+                    self.errorNode.setScale(1/2)
+                    self.errorNode.position = CGPoint(x: 175, y: 20)
+                    self.speach.addChild(self.errorNode)
+                }
+                let errorIn = SKAction.run {
+                    self.errorNode.run(self.fadeIn(self.errorNode))
+                }
+                let sequence = SKAction.sequence([self.fadeOut(self.buttonNode), change, errorIn])
+                self.buttonNode.run(sequence)
             }
             self.scene = 1
         case 1:
@@ -94,114 +94,113 @@ public class UI {
         }
         self.scene = 2
         case 2:
-        if(narrative.count > 0){
-            switch narrative[0].0 {
-            case .navigator:
-              
-                self.pilot.run(SKAction.fadeAlpha(to: 0.25, duration: 0.5))
-                self.reAdd( self.navigator)
-                self.name.text = "\(names[0]) (Navigator)"
-            default:
-                self.navigator.run(SKAction.fadeAlpha(to: 0.25, duration: 0.5))
-                self.reAdd(self.pilot)
-                self.name.text = "\(names[1]) (Pilot)"
+            if(narrative.count > 0){
+                switch narrative[0].0 {
+                case .navigator:
+                  
+                    self.pilot.run(SKAction.fadeAlpha(to: 0.25, duration: 0.5))
+                    self.reAdd( self.navigator)
+                    self.name.text = "\(names[0]) (Navigator)"
+                default:
+                    self.navigator.run(SKAction.fadeAlpha(to: 0.25, duration: 0.5))
+                    self.reAdd(self.pilot)
+                    self.name.text = "\(names[1]) (Pilot)"
+                }
+                self.text.text = narrative[0].1
+                self.narrative.remove(at: 0)
+            } else {
+                self.scene = 3
+                next()
+                
             }
-            self.text.text = narrative[0].1
-            self.narrative.remove(at: 0)
-        } else {
-            self.scene = 3
-            next()
-            
-        }
-        if(self.narrative.count == 0 && self.scene == 2){
-            DispatchQueue.main.async{
-                let sound = SKAction.playSoundFileNamed("Sounds/takeOff.m4a", waitForCompletion: false)
-                self.content.run(sound)
+            if(self.narrative.count == 0 && self.scene == 2){
+                DispatchQueue.main.async{
+                    let sound = SKAction.playSoundFileNamed("Sounds/takeOff.m4a", waitForCompletion: false)
+                    self.content.run(sound)
+                }
+                DispatchQueue.main.async{
+                    self.rocket.run(SKAction.moveTo(y: 165, duration: 2.0))
+                }
+                DispatchQueue.main.async {
+                    self.buttonNode.position = CGPoint(x: 457, y: 325)
+                    self.removeButton(1.5)
+                }
+                DispatchQueue.main.async {
+                    self.speach.run(self.fadeOut(self.speach))
+                }
+                DispatchQueue.main.async{
+                    self.navigator.run(SKAction.fadeOut(withDuration: 1.0))
+                }
+                DispatchQueue.main.async {
+                    self.pilot.run(SKAction.fadeOut(withDuration: 1.0))
+                }
             }
-            DispatchQueue.main.async{
-                self.rocket.run(SKAction.moveTo(y: 165, duration: 2.0))
-            }
-            DispatchQueue.main.async {
-                self.buttonNode.position = CGPoint(x: 457, y: 325)
-                self.removeButton(1.5)
-            }
-            DispatchQueue.main.async {
-                self.speach.run(self.fadeOut(self.speach))
-            }
-            DispatchQueue.main.async{
-                self.navigator.run(SKAction.fadeOut(withDuration: 1.0))
-            }
-            DispatchQueue.main.async {
-                self.pilot.run(SKAction.fadeOut(withDuration: 1.0))
-            }
-            
-        }
         case 3:
-        DispatchQueue.main.async {
-            self.scene2()
-        }
-        
-        DispatchQueue.main.async {
-            self.moveStars(count: 0)
-        }
-        DispatchQueue.main.async {
-            self.moveOutPlanet(oldPlanet: self.earth, newPlanet: self.purpleplanet)
-        }
-        DispatchQueue.main.async {
-            self.animateAliens()
-        }
-        DispatchQueue.main.async{
-            self.removeButton(23.0)
-        }
-        self.scene = 4
+            DispatchQueue.main.async {
+                self.scene2()
+            }
+            
+            DispatchQueue.main.async {
+                self.moveStars(count: 0)
+            }
+            DispatchQueue.main.async {
+                self.moveOutPlanet(oldPlanet: self.earth, newPlanet: self.purpleplanet)
+            }
+            DispatchQueue.main.async {
+                self.animateAliens()
+            }
+            DispatchQueue.main.async{
+                self.removeButton(23.0)
+            }
+            self.scene = 4
         case 4:
-        DispatchQueue.main.async {
-            self.scene3()
-        }
-        DispatchQueue.main.async {
-            self.moveStars(count: 1)
-        }
-        DispatchQueue.main.async{
-            self.navigator.run(self.fadeOut(self.navigator))
-        }
-        DispatchQueue.main.async{
-            self.planetTitle.run(SKAction.fadeOut(withDuration: 1.0))
-        }
-        DispatchQueue.main.async {
-            self.moveOutPlanet(oldPlanet: self.purpleplanet, newPlanet: self.grayplanet)
-        }
-        DispatchQueue.main.async {
-            self.animateCommet()
-        }
-        DispatchQueue.main.async{
-            self.removeButton(32.0)
-        }
-        self.scene = 5
+            DispatchQueue.main.async {
+                self.scene3()
+            }
+            DispatchQueue.main.async {
+                self.moveStars(count: 1)
+            }
+            DispatchQueue.main.async{
+                self.navigator.run(self.fadeOut(self.navigator))
+            }
+            DispatchQueue.main.async{
+                self.planetTitle.run(SKAction.fadeOut(withDuration: 1.0))
+            }
+            DispatchQueue.main.async {
+                self.moveOutPlanet(oldPlanet: self.purpleplanet, newPlanet: self.grayplanet)
+            }
+            DispatchQueue.main.async {
+                self.animateCommet()
+            }
+            DispatchQueue.main.async{
+                self.removeButton(32.0)
+            }
+            self.scene = 5
         case 5:
-        DispatchQueue.main.async {
-            self.buttonNode.run(self.fadeOut(self.buttonNode))
-        }
-        DispatchQueue.main.async{
-            self.pilot.run(self.fadeOut(self.pilot))
-        }
-        DispatchQueue.main.async{
-            self.planetTitle.run(SKAction.fadeOut(withDuration: 1.0))
-        }
-        DispatchQueue.main.async {
-            self.rocket.run(self.fadeOut(self.rocket))
-        }
-        DispatchQueue.main.async {
-            self.grayplanet.run(self.fadeOut(self.grayplanet))
-        }
-        DispatchQueue.main.async{
-            self.commet.run(self.fadeOut(self.commet))
-        }
-        DispatchQueue.main.async {
-            self.end()
-        }
-        self.scene = 5
+            DispatchQueue.main.async {
+                self.buttonNode.run(self.fadeOut(self.buttonNode))
+            }
+            DispatchQueue.main.async{
+                self.pilot.run(self.fadeOut(self.pilot))
+            }
+            DispatchQueue.main.async{
+                self.planetTitle.run(SKAction.fadeOut(withDuration: 1.0))
+            }
+            DispatchQueue.main.async {
+                self.rocket.run(self.fadeOut(self.rocket))
+            }
+            DispatchQueue.main.async {
+                self.grayplanet.run(self.fadeOut(self.grayplanet))
+            }
+            DispatchQueue.main.async{
+                self.commet.run(self.fadeOut(self.commet))
+            }
+            DispatchQueue.main.async {
+                self.end()
+            }
+            self.scene = 5
         default:
-        self.scene = 5
+            self.scene = 5
         }
     }
     //Remove Button: removes button from screen then re-adds on top
@@ -270,34 +269,6 @@ public class UI {
         
         DispatchQueue.main.async{
             self.planetLabel( self.names[2], .navigator, wait)
-        }
-    }
-    func planetLabel(_ name: String, _ coder: Coder, _ wait: SKAction) {
-      
-        DispatchQueue.main.async{
-            self.planetTitle = self.bigLb("\(name)")
-            self.planetTitle.fontName = UIFont.systemFont(ofSize: 1.0, weight: .bold).fontName
-           // self.planetTitle.fontSize = 14.0
-            self.planetTitle.position = CGPoint(x: (self.planetTitle.frame.width * 0.5) + 85, y: 315)
-            self.planetTitle.alpha = 0.0
-            self.content.addChild(self.planetTitle)
-            let sequence = [wait, SKAction.fadeIn(withDuration: 1.0)]
-            self.planetTitle.run(SKAction.sequence(sequence))
-        }
-        DispatchQueue.main.async{
-            var node = SKSpriteNode()
-            switch coder {
-            case .navigator:
-                node = self.navigator
-            default:
-                node = self.pilot
-            }
-            node.alpha = 0.0
-            let run = SKAction.run {
-                node.position = CGPoint(x: 50, y: 325)
-            }
-            let sequence = [wait, run, SKAction.fadeIn(withDuration: 1.0)]
-            node.run(SKAction.sequence(sequence))
         }
     }
     //ANIMATE COMMET: commet planet page animation
@@ -502,7 +473,7 @@ public class UI {
             self.speach.run(self.fadeIn(self.speach))
         }
     }
-    //Big Lb: creates a large label to add to the view
+    //big lb: creates a large label to add to the view
     func bigLb(_ text: String) -> SKLabelNode{
         let label = SKLabelNode(text: text)
         label.fontName = UIFont.systemFont(ofSize: 1.0, weight: .heavy).fontName
@@ -510,6 +481,35 @@ public class UI {
         label.fontSize = 25.0
         label.position = CGPoint(x: label.position.x, y: -130)
         return label
+    }
+    //planet label: adds planet name & owner pic to screen
+    func planetLabel(_ name: String, _ coder: Coder, _ wait: SKAction) {
+        
+        DispatchQueue.main.async{
+            self.planetTitle = self.bigLb("\(name)")
+            self.planetTitle.fontName = UIFont.systemFont(ofSize: 1.0, weight: .bold).fontName
+            // self.planetTitle.fontSize = 14.0
+            self.planetTitle.position = CGPoint(x: (self.planetTitle.frame.width * 0.5) + 85, y: 315)
+            self.planetTitle.alpha = 0.0
+            self.content.addChild(self.planetTitle)
+            let sequence = [wait, SKAction.fadeIn(withDuration: 1.0)]
+            self.planetTitle.run(SKAction.sequence(sequence))
+        }
+        DispatchQueue.main.async{
+            var node = SKSpriteNode()
+            switch coder {
+            case .navigator:
+                node = self.navigator
+            default:
+                node = self.pilot
+            }
+            node.alpha = 0.0
+            let run = SKAction.run {
+                node.position = CGPoint(x: 50, y: 325)
+            }
+            let sequence = [wait, run, SKAction.fadeIn(withDuration: 1.0)]
+            node.run(SKAction.sequence(sequence))
+        }
     }
     //MARK: Avatar Generation
     //Add Avatars: adds and creates full-sized avatars for the view
