@@ -29,6 +29,7 @@ public class UI {
     let earth = SKSpriteNode(texture: SKTexture(imageNamed: "Images/earth"))
     let purpleplanet = SKSpriteNode(texture: SKTexture(imageNamed: "Images/purpleplanet"))
     let grayplanet = SKSpriteNode(texture: SKTexture(imageNamed: "Images/grayplanet"))
+    var planetTitle = SKLabelNode()
     //MARK: Extra Nodes Initalization
     let alien1 = SKSpriteNode(texture: SKTexture(imageNamed: "Images/aliens/alien0"))
     let alien2 = SKSpriteNode(texture: SKTexture(imageNamed: "Images/aliens/alien0"))
@@ -45,7 +46,7 @@ public class UI {
     //MARK: Init
     public init(_ names: [String]){
         self.names = names
-        PlaygroundSupport.current.liveView = view
+        PlaygroundPage.current.liveView = view
         let scene = SKScene(size: CGSize(width: 512, height: 369))
         scene.scaleMode = .aspectFit
         scene.backgroundColor = background
@@ -96,14 +97,13 @@ public class UI {
         if(narrative.count > 0){
             switch narrative[0].0 {
             case .navigator:
-                self.pilot.children[0].alpha = 0.25
-                self.pilot.children[1].alpha = 0.25
-                self.reAdd(1.0, self.navigator)
+              
+                self.pilot.run(SKAction.fadeAlpha(to: 0.25, duration: 0.5))
+                self.reAdd( self.navigator)
                 self.name.text = "\(names[0]) (Navigator)"
             default:
-                self.navigator.children[0].alpha = 0.25
-                self.navigator.children[1].alpha = 0.25
-                self.reAdd(1.0, self.pilot)
+                self.navigator.run(SKAction.fadeAlpha(to: 0.25, duration: 0.5))
+                self.reAdd(self.pilot)
                 self.name.text = "\(names[1]) (Pilot)"
             }
             self.text.text = narrative[0].1
@@ -114,19 +114,33 @@ public class UI {
             
         }
         if(self.narrative.count == 0 && self.scene == 2){
-            let sound = SKAction.playSoundFileNamed("Sounds/takeOff.m4a", waitForCompletion: false)
-            self.content.run(sound)
-            self.rocket.run(SKAction.moveTo(y: 165, duration: 2.0))
+            DispatchQueue.main.async{
+                let sound = SKAction.playSoundFileNamed("Sounds/takeOff.m4a", waitForCompletion: false)
+                self.content.run(sound)
+            }
+            DispatchQueue.main.async{
+                self.rocket.run(SKAction.moveTo(y: 165, duration: 2.0))
+            }
+            DispatchQueue.main.async {
+                self.buttonNode.position = CGPoint(x: 457, y: 325)
+                self.removeButton(1.5)
+            }
+            DispatchQueue.main.async {
+                self.speach.run(self.fadeOut(self.speach))
+            }
+            DispatchQueue.main.async{
+                self.navigator.run(SKAction.fadeOut(withDuration: 1.0))
+            }
+            DispatchQueue.main.async {
+                self.pilot.run(SKAction.fadeOut(withDuration: 1.0))
+            }
+            
         }
         case 3:
         DispatchQueue.main.async {
             self.scene2()
         }
-        DispatchQueue.main.async {
-            self.speach.isHidden = true
-            self.navigator.isHidden = true
-            self.pilot.isHidden = true
-        }
+        
         DispatchQueue.main.async {
             self.moveStars(count: 0)
         }
@@ -147,6 +161,12 @@ public class UI {
         DispatchQueue.main.async {
             self.moveStars(count: 1)
         }
+        DispatchQueue.main.async{
+            self.navigator.run(self.fadeOut(self.navigator))
+        }
+        DispatchQueue.main.async{
+            self.planetTitle.run(SKAction.fadeOut(withDuration: 1.0))
+        }
         DispatchQueue.main.async {
             self.moveOutPlanet(oldPlanet: self.purpleplanet, newPlanet: self.grayplanet)
         }
@@ -160,6 +180,12 @@ public class UI {
         case 5:
         DispatchQueue.main.async {
             self.buttonNode.run(self.fadeOut(self.buttonNode))
+        }
+        DispatchQueue.main.async{
+            self.pilot.run(self.fadeOut(self.pilot))
+        }
+        DispatchQueue.main.async{
+            self.planetTitle.run(SKAction.fadeOut(withDuration: 1.0))
         }
         DispatchQueue.main.async {
             self.rocket.run(self.fadeOut(self.rocket))
@@ -223,54 +249,82 @@ public class UI {
     }
     //Animate Aliens: animates alien planet page
     func animateAliens(){
-        let order = [0,1,2,2,2,3,3,3,3,3,4,5,6,6,6,7,8,8,8,8,8,8,8,8,8,9,10,11,12,13,14,15,16,17,18,19,19,19,19,19,19,20,21,22,22,22,23,24,25,25,25,26,26,26,26,26,27,27,27,27,27,28,27,29,28,27,29,28,27,29,27]
-        var textures: [SKTexture] = []
-        let sound = SKAction.playSoundFileNamed("Sounds/minions.m4a", waitForCompletion: false)
-        let lb = self.bigLb("\(self.names[2])")
-        lb.position = CGPoint(x: (lb.frame.width * 0.5) + 25, y: 325)
-        lb.alpha = 0.0
-        self.content.addChild(lb)
-        let remove = SKAction.run {
-            lb.removeFromParent()
-        }
-        for e in order {
-            textures.append(SKTexture(imageNamed: "Images/aliens/alien\(e)"))
-        }
-        let animate = SKAction.animate(with: textures, timePerFrame: (0.2))
         let wait = SKAction.wait(forDuration: 10.0)
-        self.content.run(SKAction.sequence([wait, sound]))
-        lb.run(SKAction.sequence([wait, SKAction.fadeIn(withDuration: 1.0), SKAction.wait(forDuration: 11.0), SKAction.fadeOut(withDuration: 1.0), remove]))
-        alien1.run(SKAction.sequence([wait, animate]))
-        alien2.run(SKAction.sequence([wait, animate]))
-        alien3.run(SKAction.sequence([wait, animate]))
+        DispatchQueue.main.async{
+            let order = [0,1,2,2,2,3,3,3,3,3,4,5,6,6,6,7,8,8,8,8,8,8,8,8,8,9,10,11,12,13,14,15,16,17,18,19,19,19,19,19,19,20,21,22,22,22,23,24,25,25,25,26,26,26,26,26,27,27,27,27,27,28,27,29,28,27,29,28,27,29,27]
+            
+            var textures: [SKTexture] = []
+            let sound = SKAction.playSoundFileNamed("Sounds/minions.m4a", waitForCompletion: false)
+            
+            for e in order {
+                textures.append(SKTexture(imageNamed: "Images/aliens/alien\(e)"))
+            }
+           
+            let animate = SKAction.animate(with: textures, timePerFrame: (0.2))
+            self.content.run(SKAction.sequence([wait, sound]))
+            self.alien1.run(SKAction.sequence([wait, animate]))
+            self.alien2.run(SKAction.sequence([wait, animate]))
+            self.alien3.run(SKAction.sequence([wait, animate]))
+        }
+       
+        
+        DispatchQueue.main.async{
+            self.planetLabel( self.names[2], .navigator, wait)
+        }
+    }
+    func planetLabel(_ name: String, _ coder: Coder, _ wait: SKAction) {
+      
+        DispatchQueue.main.async{
+            self.planetTitle = self.bigLb("\(name)")
+            self.planetTitle.fontName = UIFont.systemFont(ofSize: 1.0, weight: .bold).fontName
+           // self.planetTitle.fontSize = 14.0
+            self.planetTitle.position = CGPoint(x: (self.planetTitle.frame.width * 0.5) + 85, y: 315)
+            self.planetTitle.alpha = 0.0
+            self.content.addChild(self.planetTitle)
+            let sequence = [wait, SKAction.fadeIn(withDuration: 1.0)]
+            self.planetTitle.run(SKAction.sequence(sequence))
+        }
+        DispatchQueue.main.async{
+            var node = SKSpriteNode()
+            switch coder {
+            case .navigator:
+                node = self.navigator
+            default:
+                node = self.pilot
+            }
+            node.alpha = 0.0
+            let run = SKAction.run {
+                node.position = CGPoint(x: 50, y: 325)
+            }
+            let sequence = [wait, run, SKAction.fadeIn(withDuration: 1.0)]
+            node.run(SKAction.sequence(sequence))
+        }
     }
     //ANIMATE COMMET: commet planet page animation
     func animateCommet(){
-        let path = UIBezierPath()
-        path.move(to: CGPoint(x:550, y:275))
-        path.addCurve(to: CGPoint(x:-50, y:200), controlPoint1: CGPoint(x:300, y:325), controlPoint2: CGPoint(x:200, y:325))
-        let sound = SKAction.playSoundFileNamed("Sounds/spaceOdessey.m4a", waitForCompletion: false)
-        let circle = SKAction.follow( path.cgPath, asOffset: false, orientToPath: true, duration: 3.0)
         let wait = SKAction.wait(forDuration: 10.0)
-        let order = [1,2,3,4,5,6,7]
-        var movement = [wait, circle]
-        let lb = self.bigLb("\(self.names[3])")
-        lb.position = CGPoint(x: (lb.frame.width * 0.5) + 25, y: 325)
-        lb.alpha = 0.0
-        self.content.addChild(lb)
-        let remove = SKAction.run {
-            lb.removeFromParent()
-        }
-        for e in order {
-            let change =  SKAction.run {
-                self.commet.texture = SKTexture(imageNamed: "Images/commets/commet\(e)")
+        DispatchQueue.main.async {
+            let path = UIBezierPath()
+            path.move(to: CGPoint(x:550, y:275))
+            path.addCurve(to: CGPoint(x:-50, y:200), controlPoint1: CGPoint(x:300, y:325), controlPoint2: CGPoint(x:200, y:325))
+            let sound = SKAction.playSoundFileNamed("Sounds/spaceOdessey.m4a", waitForCompletion: false)
+            let circle = SKAction.follow( path.cgPath, asOffset: false, orientToPath: true, duration: 3.0)
+            let wait = SKAction.wait(forDuration: 10.0)
+            let order = [1,2,3,4,5,6,7]
+            var movement = [wait, circle]
+            for e in order {
+                let change =  SKAction.run {
+                    self.commet.texture = SKTexture(imageNamed: "Images/commets/commet\(e)")
+                }
+                movement.append(change)
+                movement.append(circle)
             }
-            movement.append(change)
-            movement.append(circle)
+            self.commet.run( SKAction.sequence(movement))
+            self.content.run(SKAction.sequence([wait, sound]))
         }
-        lb.run(SKAction.sequence([wait, SKAction.fadeIn(withDuration: 1.0), SKAction.wait(forDuration: 22.0), SKAction.fadeOut(withDuration: 1.0), remove]))
-        commet.run( SKAction.sequence(movement))
-        self.content.run(SKAction.sequence([wait, sound]))
+        DispatchQueue.main.async {
+            self.planetLabel(self.names[3], .pilot, wait)
+        }
     }
     //Move Out Planet: planet segue animation
     func moveOutPlanet(oldPlanet: SKSpriteNode?, newPlanet: SKSpriteNode?){
@@ -282,11 +336,10 @@ public class UI {
         }
     }
     //Re-Add: re adds avatars to be on top of the view
-    func reAdd(_ alpha: CGFloat, _ node: SKSpriteNode){
+    func reAdd( _ node: SKSpriteNode){
         
         let add = SKAction.run {
-            node.children[0].alpha = alpha
-            node.children[1].alpha = alpha
+         
             self.content.addChild(node)
         }
         node.run(SKAction.sequence( [self.fadeOut(node), add, SKAction.fadeIn(withDuration: 1.0)]))
@@ -495,18 +548,17 @@ public class UI {
             let add = SKAction.run{
                 self.navigator.removeAllChildren()
                 let pic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/astronautsm"))
-                pic.alpha = alpha
                 self.navigator.setScale(1/2)
                 self.navigator.position = CGPoint(x: 75, y: 310)
                 let face = SKSpriteNode(texture: SKTexture(image:  self.images[1]))
                 face.setScale(((pic.texture?.size().width)! * 0.3)/(face.texture?.size().width)!)
                 face.position = CGPoint(x: face.position.x, y:      ((pic.texture?.size().height)! * 0.2))
-                face.alpha = alpha
+               // self.navigator.alpha = alpha
                 self.navigator.addChild(face)
                 self.navigator.addChild(pic)
                 self.content.addChild(self.navigator)
             }
-            self.navigator.run(SKAction.sequence( [self.fadeOut(self.navigator), add, SKAction.fadeIn(withDuration: 1.0)]))
+            self.navigator.run(SKAction.sequence( [self.fadeOut(self.navigator), add, SKAction.fadeAlpha(to: alpha, duration: 1.0)]))
         }
     }
     //Add Small Pilot: creates and adds a small pilot avatar to the view
@@ -515,19 +567,18 @@ public class UI {
             let add = SKAction.run{
                 self.pilot.removeAllChildren()
                 let pic = SKSpriteNode(texture: SKTexture(imageNamed: "Images/astronautsm"))
-                pic.alpha = alpha
                 self.pilot.setScale(1/2)
                 self.pilot.position = CGPoint(x: 50, y: 310)
                 let face = SKSpriteNode(texture: SKTexture(image:  self.images[0]))
                 face.setScale(((pic.texture?.size().width)! * 0.3)/(face.texture?.size().width)!)
                 face.position = CGPoint(x: face.position.x, y:      ((pic.texture?.size().height)! * 0.2))
-                face.alpha = alpha
+                //self.pilot.alpha = alpha
                 self.pilot.addChild(face)
                 self.pilot.addChild(pic)
                 self.content.addChild(self.pilot)
                 
             }
-            self.pilot.run(SKAction.sequence( [self.fadeOut(self.pilot), add, SKAction.fadeIn(withDuration: 1.0)]))
+            self.pilot.run(SKAction.sequence( [self.fadeOut(self.pilot), add, SKAction.fadeAlpha(to: alpha, duration: 1.0)]))
         }
         DispatchQueue.main.async {
             self.createSpeach()
