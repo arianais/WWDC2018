@@ -14,7 +14,7 @@ public class UI {
         case pilot = "Pilot"
         case navigator = "Navigator"
     }
-    var narrative: [(Coder, String)] = [(.pilot, "Starting up the rocket's engine...."), (.pilot, "Setting up the controls...."),(.pilot, "Starting up the rocket's engine...."), (.pilot, "Getting the rocket's current position..."), (.navigator, "Connecting to the rocket's navigation system..."), (.navigator, "Setting the route's starting and ending points..."), (.navigator, "Setting the route's first stop..."),  (.navigator, "Setting the route's second stop..."),  (.navigator, "Downloading directions from the navigation system..."), (.pilot, "Getting directions from the navigation system..."), (.pilot, "Starting directions from the navigation system..."),  (.pilot, "Blasting off!")]
+    var narrative: [(Coder, String)] = [(.pilot, "Starting up the rocket's engine...."), (.pilot, "Setting up the control system...."), (.pilot, "Adding my planet into the system...."), (.pilot, "Getting the rocket's current position..."), (.navigator, "Connecting to the rocket's navigation system..."), (.navigator, "Setting the route's starting and ending points..."), (.navigator, "Setting the route's first stop..."),  (.navigator, "Setting the route's second stop..."),  (.navigator, "Downloading directions from the navigation system..."), (.pilot, "Getting directions from the navigation system..."), (.pilot, "Starting directions from the navigation system..."),  (.pilot, "Blasting off!")]
     //MARK: View Initalization
     let background = UIColor(red: (34.0/255.0), green: (33.0/255.0), blue: (58.0/255.0), alpha: 1.0)
     var buttonNode = SKNode()
