@@ -4,7 +4,6 @@
 //  Created by Ariana Isabel Sokolov on 3/20/18.
 //  Copyright © 2017 Logical Nonsense, LLC. All rights reserved.
 
-
 import SpriteKit
 import PlaygroundSupport
 public class UI {
@@ -97,7 +96,6 @@ public class UI {
             if(narrative.count > 0){
                 switch narrative[0].0 {
                 case .navigator:
-                    
                     self.pilot.run(SKAction.fadeAlpha(to: 0.25, duration: 0.5))
                     self.reAdd( self.navigator)
                     self.name.text = "\(names[0]) (Navigator)"
@@ -113,29 +111,31 @@ public class UI {
                 next()
                 
             }
-            if(self.narrative.count == 0 && self.scene == 2){
-                DispatchQueue.main.async{
-                    let sound = SKAction.playSoundFileNamed("Sounds/takeOff.m4a", waitForCompletion: false)
-                    self.content.run(sound)
-                }
-                DispatchQueue.main.async{
-                    self.rocket.run(SKAction.moveTo(y: 165, duration: 2.0))
-                }
-                DispatchQueue.main.async {
-                    self.buttonNode.position = CGPoint(x: 457, y: 325)
-                    self.removeButton(1.5)
-                }
-                DispatchQueue.main.async {
-                    self.speach.run(self.fadeOut(self.speach))
-                }
-                DispatchQueue.main.async{
-                    self.navigator.run(SKAction.fadeOut(withDuration: 1.0))
-                }
-                DispatchQueue.main.async {
-                    self.pilot.run(SKAction.fadeOut(withDuration: 1.0))
-                }
-            }
+            
         case 3:
+            DispatchQueue.main.async {
+                self.speach.run(self.fadeOut(self.speach))
+            }
+            DispatchQueue.main.async{
+                self.navigator.run(SKAction.fadeOut(withDuration: 1.0))
+            }
+            DispatchQueue.main.async {
+                self.pilot.run(SKAction.fadeOut(withDuration: 1.0))
+            }
+            DispatchQueue.main.async{
+                let sound = SKAction.playSoundFileNamed("Sounds/takeOff.m4a", waitForCompletion: false)
+                self.content.run(sound)
+            }
+            DispatchQueue.main.async{
+                self.rocket.run(SKAction.moveTo(y: 165, duration: 2.0))
+            }
+            DispatchQueue.main.async {
+                self.buttonNode.position = CGPoint(x: 457, y: 325)
+                self.removeButton(1.5)
+            }
+            self.scene = 4
+        case 4:
+            
             DispatchQueue.main.async {
                 self.scene2()
             }
@@ -152,8 +152,8 @@ public class UI {
             DispatchQueue.main.async{
                 self.removeButton(23.0)
             }
-            self.scene = 4
-        case 4:
+            self.scene = 5
+        case 5:
             DispatchQueue.main.async {
                 self.scene3()
             }
@@ -175,8 +175,8 @@ public class UI {
             DispatchQueue.main.async{
                 self.removeButton(32.0)
             }
-            self.scene = 5
-        case 5:
+            self.scene = 6
+        case 6:
             DispatchQueue.main.async {
                 self.buttonNode.run(self.fadeOut(self.buttonNode))
             }
@@ -198,12 +198,12 @@ public class UI {
             DispatchQueue.main.async {
                 self.end()
             }
-            self.scene = 5
+            self.scene = 6
         default:
-            self.scene = 5
+            self.scene = 6
         }
     }
-    //Remove Button: removes button from screen then re-adds on top
+    //remove button: removes button from screen then re-adds on top
     func removeButton(_ time: Double){
         let wait = SKAction.wait(forDuration: time)
         let change = SKAction.run {
@@ -213,13 +213,13 @@ public class UI {
         self.buttonNode.run(sequence)
     }
     //MARK: General Animation
-    //Fade In: fades a node into the scene
+    //fade in: fades a node into the scene
     func fadeIn(_ node: SKNode) -> SKAction{
         node.alpha = 0.0
         let sequence = SKAction.sequence([SKAction.fadeIn(withDuration: 1.0)])
         return sequence
     }
-    //Fade Out: fades a node out of the scene and removes it
+    //fade out: fades a node out of the scene and removes it
     func fadeOut(_ node: SKNode) -> SKAction{
         let remove = SKAction.run {
             node.removeFromParent()
@@ -228,7 +228,7 @@ public class UI {
         return sequence
     }
     //MARK: Scene Animation
-    //Move Stars: creates moving animation between planets
+    //move stars: creates moving animation between planets
     func moveStars(count: Int){
         var sound = SKAction()
         if(count == 0){
@@ -246,7 +246,7 @@ public class UI {
         self.content.run(sound)
         sprite.run(seq01)
     }
-    //Animate Aliens: animates alien planet page
+    //animate aliens: animates alien planet page
     func animateAliens(){
         let wait = SKAction.wait(forDuration: 10.0)
         DispatchQueue.main.async{
@@ -271,7 +271,7 @@ public class UI {
             self.planetLabel( self.names[2], .navigator, wait)
         }
     }
-    //ANIMATE COMMET: commet planet page animation
+    //animate commet: commet planet page animation
     func animateCommet(){
         let wait = SKAction.wait(forDuration: 10.0)
         DispatchQueue.main.async {
@@ -297,7 +297,7 @@ public class UI {
             self.planetLabel(self.names[3], .pilot, wait)
         }
     }
-    //Move Out Planet: planet segue animation
+    //move Out planet: planet segue animation
     func moveOutPlanet(oldPlanet: SKSpriteNode?, newPlanet: SKSpriteNode?){
         if let planet = oldPlanet{
             planet.run(SKAction.moveTo(x: -400, duration: 4.0))
@@ -306,7 +306,7 @@ public class UI {
             planet.run( SKAction.sequence([SKAction.wait(forDuration: 6.0), SKAction.moveTo(x: 250, duration: 4.0) ]))
         }
     }
-    //Re-Add: re adds avatars to be on top of the view
+    //re-add: re adds avatars to be on top of the view
     func reAdd( _ node: SKSpriteNode){
         
         let add = SKAction.run {
@@ -316,7 +316,7 @@ public class UI {
         node.run(SKAction.sequence( [self.fadeOut(node), add, SKAction.fadeIn(withDuration: 1.0)]))
     }
     //MARK: Scene Setup
-    //Basic: adds stars and a button to the scene
+    //basic: adds stars and a button to the scene
     func basic(){
         DispatchQueue.main.async {
             self.stars.setScale(1/2)
@@ -333,7 +333,7 @@ public class UI {
             self.content.addChild(self.buttonNode)
         }
     }
-    //Team: Adds begining team page
+    //team: Adds begining team page
     func team(){
         DispatchQueue.main.async {
             self.basic()
@@ -348,7 +348,7 @@ public class UI {
             self.pilot.addChild(self.bigLb("Pilot"))
         }
     }
-    //Add Error: adds error page with step number of error incident and coder responsible
+    //add error: adds error page with step number of error incident and coder responsible
     public func addError(step: Int, coder: Coder){
         DispatchQueue.main.async{
             self.buttonNode.run(self.fadeIn(self.buttonNode))
@@ -363,7 +363,7 @@ public class UI {
         }
         self.scene = 0
     }
-    //Scene 1: sets up scene 1
+    //scene 1: sets up scene 1
     func scene1(){
         DispatchQueue.main.async {
             self.earth.setScale(1/2)
@@ -381,7 +381,7 @@ public class UI {
             self.addSmallPilot(1.0)
         }
     }
-    //Scene 2: sets up scene 1
+    //scene 2: sets up scene 1
     func scene2(){
         DispatchQueue.main.async {
             self.purpleplanet.setScale(1/2)
@@ -404,7 +404,7 @@ public class UI {
             self.purpleplanet.addChild(self.alien3)
         }
     }
-    //Scene 3: sets up scene 3
+    //scene 3: sets up scene 3
     func scene3(){
         DispatchQueue.main.async {
             self.commmetPath.fillColor = .clear
@@ -424,7 +424,7 @@ public class UI {
             self.content.addChild(self.commet)
         }
     }
-    //End: sets up ending scene
+    //end: sets up ending scene
     func end(){
         let lb = self.bigLb("Amazing teamwork!👏")
         lb.position = CGPoint(x: 256, y:185 )
@@ -433,21 +433,21 @@ public class UI {
         lb.run(self.fadeIn(lb))
     }
     //MARK: Text Node Generation
-    //Create Speach: creates & adds a speach bubble node
+    //create speach: creates & adds a speach bubble node
     func createSpeach(){
         DispatchQueue.main.async{
             self.createBubble("\(self.names[1]) (Pilot)", CGPoint(x: 300, y: 310))
             self.text.text = self.narrative[0].1
         }
     }
-    //Create Error: creates & adds an error bubble node
+    //create error: creates & adds an error bubble node
     func createError(){
         DispatchQueue.main.async{
             let pos = CGPoint(x: 256, y: 185)
             self.createBubble("Mission Control", pos)
         }
     }
-    //Create Bubble: creates & adds a bubble node
+    //create bubble: creates & adds a bubble node
     func createBubble(_ name: String, _ pos: CGPoint){
         DispatchQueue.main.async {
             let bubble = SKSpriteNode(texture: SKTexture(imageNamed: "Images/bubble"))
@@ -517,7 +517,7 @@ public class UI {
         }
     }
     //MARK: Avatar Generation
-    //Add Avatars: adds and creates full-sized avatars for the view
+    //add avatars: adds and creates full-sized avatars for the view
     func addAvatars(_ ex: String, pos1: CGPoint, pos2: CGPoint){
         let path = "Images/astronaut" + ex
         DispatchQueue.main.async {
@@ -547,7 +547,7 @@ public class UI {
             }
         }
     }
-    //Add Small Nav: creates and adds a small navigator avatar to the view
+    //add small nav: creates and adds a small navigator avatar to the view
     func addSmallNav(_ alpha: CGFloat){
         DispatchQueue.main.async {
             let add = SKAction.run{
@@ -566,7 +566,7 @@ public class UI {
             self.navigator.run(SKAction.sequence( [self.fadeOut(self.navigator), add, SKAction.fadeAlpha(to: alpha, duration: 1.0)]))
         }
     }
-    //Add Small Pilot: creates and adds a small pilot avatar to the view
+    //add small pilot: creates and adds a small pilot avatar to the view
     func addSmallPilot(_ alpha: CGFloat){
         DispatchQueue.main.async {
             let add = SKAction.run{
