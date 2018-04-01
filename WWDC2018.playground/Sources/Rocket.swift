@@ -114,11 +114,28 @@ public class Rocket{
             while(self.status.count > error && self.status[error] != false) {
                 error += 1
             }
-            if(error > 4 && error < 8){
-                ui.addError(step: error + 1, coder: .navigator)
+            
+            if(error < 2){
+                error += 1
+            }
+            else if (error < 4){
+                error += 2
+            }
+            else if (error < 5){
+                error += 4
+            }
+            else if (error == 5){
+                error = 8
+            }
+            else if (error < 9){
+                error += 3
+            }
+            
+            if(error > 3 && error < 10){
+                ui.addError(step: error , coder: .navigator)
             }
             else{
-                ui.addError(step: error + 1, coder: .pilot)
+                ui.addError(step: error, coder: .pilot)
             }
             
         }
