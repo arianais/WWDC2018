@@ -5,8 +5,7 @@
  In this playground, two coders have recently both bought their very own planets. Together they will go on a joyride through space to check out their new real estate. **Here are some tips to make sure your journey goes as smoothly as possible.**
  
 
- 
- ##Basic Instructions
+ ### Basic Instructions
  - **Ensure only one person is looking at the screen at any point of time**, unless otherwise noted. That way you'll be able to watch out for unexpected asteroids coming your way!
  - Before passing the keyboard back to your partner, **scroll up the playground page so the top of the `Comment Template` borders the top of the computer screen**. Because fuel is limited on this mission, it is important that you code efficiently. Writing good  `Comment Template`s and making them visible to your partner will accomplish this.
  
